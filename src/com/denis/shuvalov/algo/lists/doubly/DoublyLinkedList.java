@@ -38,7 +38,7 @@ class DoublyLinkedList<T extends Comparable<T>> implements MyList<T> {
         Node<T> newNode = new Node<>(elem);
 
         Node<T> currentNode = first;
-        Node<T> nextNode = currentNode.next;
+        Node<T> nextNode    = currentNode.next;
 
         while (nextNode != null) {
             if (currentNode.value.compareTo(key) == 0) {
@@ -54,7 +54,7 @@ class DoublyLinkedList<T extends Comparable<T>> implements MyList<T> {
             nextNode = currentNode.next;
         }
 
-        if(currentNode == last) {
+        if (currentNode == last) {
             newNode.previous = last;
             last.next = newNode;
             last = newNode;
@@ -67,21 +67,76 @@ class DoublyLinkedList<T extends Comparable<T>> implements MyList<T> {
 
     @Override
     public T deleteFirst() {
-        return null;
+        if (isEmpty()) {
+            return null;
+        }
+
+        T result = first.value;
+
+        if (first.next == null) {
+            last = null;
+            first = null;
+        }
+        else {
+            first.next.previous = null;
+            first = first.next;
+        }
+
+        return result;
     }
 
     @Override
     public T deleteLast() {
-        return null;
+        if (isEmpty())
+            return null;
+
+        T value = last.value;
+
+        if (last.previous == null) {
+            last = null;
+            first = null;
+        }
+        else {
+            last.previous.next = null;
+            last = last.previous;
+        }
+
+        return value;
     }
 
     @Override
     public T deleteKey(T elem) {
-        return null;
+        if (isEmpty())
+            return null;
+
+        Node<T> current = this.first;
+        while (current.value.compareTo(elem) != 0) {
+            current = current.next;
+            if (current == null) {
+                return null;
+            }
+        }
+
+        if (current == first)
+            first = first.next;
+        else
+            current.previous.next = current.next;
+
+        if (current == last)
+            last = last.previous;
+        else
+            current.next.previous = current.previous;
+
+        return current.value;
     }
 
     @Override
     public void displayForward() {
+        if (isEmpty()) {
+            System.out.println("Empty");
+            return;
+        }
+
         System.out.print("Forward:  " + first + " -> ");
         Node<T> tmp = first.next;
         while (tmp != null) {
@@ -95,6 +150,11 @@ class DoublyLinkedList<T extends Comparable<T>> implements MyList<T> {
 
     @Override
     public void displayBackward() {
+        if (isEmpty()) {
+            System.out.println("Empty");
+            return;
+        }
+
         System.out.print("Backward: " + last + " -> ");
         Node<T> tmp = last.previous;
         while (tmp != null) {

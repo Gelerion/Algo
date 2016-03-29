@@ -1,6 +1,5 @@
 package com.denis.shuvalov.algo.lists.doubly;
 
-//225
 class DoublyLinkedList<T extends Comparable<T>> implements MyList<T> {
 
     private Node<T> first;
@@ -171,7 +170,7 @@ class DoublyLinkedList<T extends Comparable<T>> implements MyList<T> {
         return first == null;
     }
 
-    private static class Node<T> {
+     private static class Node<T> {
         private T value;
         private Node<T> next;
         private Node<T> previous;

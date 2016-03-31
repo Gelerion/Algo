@@ -13,11 +13,24 @@ class Node<T> {
         return next;
     }
 
-    Node<T> pevious() {
+    Node<T> next(Node<T> node) {
+        return next = node;
+    }
+
+    Node<T> previous() {
         return previous;
+    }
+
+    Node<T> previous(Node<T> node) {
+        return previous = node;
     }
 
     T item() {
         return item;
+    }
+
+    @Override
+    public String toString() {
+        return item.toString();
     }
 }

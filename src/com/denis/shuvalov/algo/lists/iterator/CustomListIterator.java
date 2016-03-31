@@ -19,9 +19,11 @@ interface CustomListIterator<T> {
      */
     boolean atEnd();
 
-    void insertAfter(T key, T elem);
+    //insert after current
+    void insertAfter(T elem);
 
-    void insertBefore(T key, T elem);
+    //insert before current
+    void insertBefore(T elem);
 
     void deleteCurrent();
 }

@@ -4,20 +4,33 @@ class NodeList<T extends Comparable<T>> implements CustomIterator<T> {
     private Node<T> first;
     private Node<T> last;
 
+    //ads last
+    void add(T item) {
+        Node<T> node = new Node<>(item);
+
+        if(isEmpty())
+            first = node;
+        else
+            last.next(node);
+
+        node.previous(last);
+        last = node;
+    }
+
+    public void setFirst(Node<T> first) {
+        this.first = first;
+    }
+
+    public void setLast(Node<T> last) {
+        this.last = last;
+    }
+
     Node<T> getFirst() {
         return first;
     }
 
-    void setFirst(Node<T> first) {
-        this.first = first;
-    }
-
     Node<T> getLast() {
         return last;
-    }
-
-    void setLast(Node<T> last) {
-        this.last = last;
     }
 
     boolean isEmpty() {

@@ -1,0 +1,101 @@
+package com.denis.shuvalov.algo.adt.queue.array_based;
+
+
+import com.denis.shuvalov.algo.adt.queue.AdtQueue;
+
+@SuppressWarnings("all")
+public class ArrayQueueSize<T> implements AdtQueue<T> {
+    private Object[] data;
+    private int front;
+    private int rear;
+    private int maxSize;
+
+    public ArrayQueueSize(int size) {
+        maxSize = size + 1; //one more for case where rear and front are same
+        data = new Object[maxSize];
+        front = 0;
+        rear = -1;
+    }
+
+    @Override
+    public void insert(T elem) {
+        if(rear == maxSize - 1) rear = -1;
+        data[++rear] = elem;
+    }
+
+    @Override
+    public T remove() {
+        if(front == maxSize) front = 0;
+        return (T) data[front++];
+    }
+
+    @Override
+    public T frontRemove() {
+        return null;
+    }
+
+    @Override
+    public T rearRemove() {
+        return null;
+    }
+
+    @Override
+    public T frontPeek() {
+        return null;
+    }
+
+    @Override
+    public T rearPeek() {
+        return null;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return false;
+    }
+
+    @Override
+    public boolean isFull() {
+        return false;
+    }
+
+    @Override
+    public int size() {
+        int result = 0;
+        if (rear > front) {
+            result = rear - front + 1;
+        }
+
+        if (rear < front) {
+            result = (maxSize - front) + rear + 1;
+        }
+
+
+        return result;
+    }
+
+    @Override
+    public void display() {
+        System.out.println("----- Display -----");
+        System.out.println("AdtQueue size: " + size());
+        System.out.println("AdtQueue max size: " + (maxSize - 1));
+        System.out.println("Rear index: " + rear);
+        System.out.println("Front index: " + front);
+        System.out.println("---------------");
+
+        for (int i = maxSize - 2; i > -1; i--) {
+            if (rear == front && front == i) {
+                System.out.println("[" + data[i] + "] <-- Front/Rear");
+            }
+            else if(rear == i) {
+                System.out.println("[" + data[i] + "] <-- Rear");
+            }
+            else if (front == i) {
+                System.out.println("[" + data[i] + "] <-- Front");
+            }
+            else
+                System.out.println("[" + data[i] + "]");
+        }
+        System.out.println("---------------");
+    }
+}

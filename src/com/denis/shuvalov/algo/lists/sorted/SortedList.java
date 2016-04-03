@@ -54,7 +54,7 @@ class SortedList {
         long value;
         Node next;
 
-        public Node(long value) {
+        Node(long value) {
             this.value = value;
         }
 

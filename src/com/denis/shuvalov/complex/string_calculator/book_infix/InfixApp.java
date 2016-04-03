@@ -1,4 +1,4 @@
-package com.denis.shuvalov.algo.arrays.base.infix;
+package com.denis.shuvalov.complex.string_calculator.book_infix;
 
 import java.io.IOException;
 
@@ -8,7 +8,7 @@ public class InfixApp {
         String input, output;
         while(true)
         {
-            System.out.print("Enter infix: ");
+            System.out.print("Enter book_infix: ");
             System.out.flush();
             input = getString();
             // Чтение строки с клавиатуры

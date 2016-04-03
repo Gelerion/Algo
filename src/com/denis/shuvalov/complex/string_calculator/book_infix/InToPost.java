@@ -1,4 +1,4 @@
-package com.denis.shuvalov.algo.arrays.base.infix;
+package com.denis.shuvalov.complex.string_calculator.book_infix;
 
 public class InToPost {
 

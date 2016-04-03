@@ -1,4 +1,4 @@
-package com.denis.shuvalov.algo.arrays;
+package com.denis.shuvalov.complex.string_calculator;
 
 import java.util.Stack;
 

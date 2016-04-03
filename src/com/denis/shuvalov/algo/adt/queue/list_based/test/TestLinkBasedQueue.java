@@ -1,4 +1,6 @@
-package com.denis.shuvalov.algo.lists.queue;
+package com.denis.shuvalov.algo.adt.queue.list_based.test;
+
+import com.denis.shuvalov.algo.adt.queue.list_based.LinkBasedQueue;
 
 public class TestLinkBasedQueue {
     public static void main(String[] args) {

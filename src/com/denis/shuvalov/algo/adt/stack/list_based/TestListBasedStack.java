@@ -1,4 +1,4 @@
-package com.denis.shuvalov.algo.lists.stack;
+package com.denis.shuvalov.algo.adt.stack.list_based;
 
 public class TestListBasedStack {
     public static void main(String[] args) {

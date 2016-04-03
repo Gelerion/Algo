@@ -10,6 +10,7 @@ public class TestSortedList {
         list.insert(50);
         list.insert(60);
         list.insert(5);
+        list.insert(15);
 
         list.display();
 

@@ -1,4 +1,4 @@
-package com.denis.shuvalov.algo.lists.queue;
+package com.denis.shuvalov.algo.adt.queue.list_based;
 
 //FIFO
 public class LinkBasedQueue {
@@ -39,7 +39,7 @@ public class LinkBasedQueue {
             this.next = next;
         }
 
-        public Link(String value) {
+        Link(String value) {
             this.value = value;
         }
     }

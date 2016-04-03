@@ -1,6 +1,8 @@
-package com.denis.shuvalov.algo.lists.stack;
+package com.denis.shuvalov.algo.adt.stack.list_based;
 
-public class ListBasedStack {
+import com.denis.shuvalov.algo.adt.stack.AdtStack;
+
+class ListBasedStack implements AdtStack<String> {
     private Node current;
 
     public void push(String elem) {

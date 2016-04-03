@@ -1,0 +1,22 @@
+package com.denis.shuvalov.algo.adt.queue.list_based;
+
+class Node<T> {
+    T item;
+    Node<T> next;
+    Node<T> previous;
+
+    Node(T item) {
+        this.item = item;
+    }
+
+    Node(Node<T> previous, T item, Node<T> next) {
+        this.previous = previous;
+        this.item = item;
+        this.next = next;
+    }
+
+    @Override
+    public String toString() {
+        return String.valueOf(item);
+    }
+}

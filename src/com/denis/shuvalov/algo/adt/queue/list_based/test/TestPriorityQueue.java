@@ -35,5 +35,14 @@ public class TestPriorityQueue {
         queue.insert(18);
         queue.insert(17);
         queue.display();
+
+        System.out.println("Removing");
+        queue.remove();
+        queue.remove();
+        queue.remove();
+        queue.remove();
+        queue.remove();
+        queue.display();
+
     }
 }

@@ -50,7 +50,11 @@ public class ListBasedPriorityQueue<T extends Comparable<T>> implements AdtPrior
 
     @Override
     public T remove() {
-        return first.item;
+        T result = first.item;
+        first.previous = null;
+        first = first.next;
+        first.previous = null;
+        return result;
     }
 
     @Override

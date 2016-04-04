@@ -29,6 +29,7 @@ public class ArrayQueue<T> implements AdtQueue<T> {
             System.out.println("[ERROR] Can not insert [" + elem + "], queue is full");
             return;
         }
+        
         //cyclic
         if (rearIndex == maxSize - 1) rearIndex = -1;
 

@@ -8,7 +8,7 @@ package com.denis.shuvalov.algo.adt.queue;
  * лентами для правого конца), дек работает как стек. Если же ограничиться методами
  * insertLeft() и removeRight() (или противоположной парой), он работает как очередь.
  */
-public interface AdtDequeue<T> {
+public interface AdtDeque<T> {
 
     void insertLeft(T item);
 

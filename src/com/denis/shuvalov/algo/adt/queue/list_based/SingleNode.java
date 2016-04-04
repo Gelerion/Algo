@@ -1,6 +1,6 @@
 package com.denis.shuvalov.algo.adt.queue.list_based;
 
-public class SingleNode<T> {
+class SingleNode<T> {
     T item;
     SingleNode<T> next;
 
@@ -11,5 +11,10 @@ public class SingleNode<T> {
     SingleNode(T item, SingleNode<T> next) {
         this.item = item;
         this.next = next;
+    }
+
+    @Override
+    public String toString() {
+        return String.valueOf(item);
     }
 }

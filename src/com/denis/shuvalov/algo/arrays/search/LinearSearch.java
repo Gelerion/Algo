@@ -11,6 +11,13 @@ public class LinearSearch extends BaseArray
 		super(size);
 	}
 
+    public static void main(String[] args) {
+        LinearSearch array = new LinearSearch(10);
+        Helper.fillValues(array);
+        array.find(88);
+
+    }
+
 	public void insert(int value)
 	{
 		array[size++] = value;
@@ -23,26 +30,18 @@ public class LinearSearch extends BaseArray
 		{
 			if (value == array[i])
 			{
-				Log.find.found(value, i);
-				return i;
+                Log.Array.find.found(value, i);
+                return i;
 			}
 		}
 
-		Log.find.notFound(value);
-		return -1;
+        Log.Array.find.notFound(value);
+        return -1;
 	}
 
 	@Override
 	public boolean delete(int value)
 	{
 		return false;
-	}
-
-	public static void main(String[] args)
-	{
-		LinearSearch array = new LinearSearch(10);
-		Helper.fillValues(array);
-		array.find(88);
-
 	}
 }

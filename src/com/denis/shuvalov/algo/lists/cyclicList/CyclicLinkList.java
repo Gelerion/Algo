@@ -1,24 +1,25 @@
 package com.denis.shuvalov.algo.lists.cyclicList;
 
+import com.denis.shuvalov.algo.arrays.base.Log;
+
 /**
- * Циклическим списком называется связанный список, в котором последний
- * элемент содержит ссылку на первый элемент. Существует много способов реализа-
- * ции циклических списков. Иногда объект списка содержит указатель на «начало»
- * списка. Однако в этом случае список уже не похож на замкнутый круг, а больше
- * напоминает обычный список, у которого конец связан с началом. Создайте класс
- * для односвязного списка, не имеющий ни начала, ни конца. Доступ к списку осу-
- * ществляется по единственной ссылке current, которая может указывать на любой
- * элемент списка. Ссылка перемещается по списку так, как требуется пользователю
- * (ситуация, для которой идеально подходит циклический список, представлена
- * в проекте 5.5). Список должен поддерживать операции вставки, поиска и удаления.
- * Вероятно, удобнее выполнять эти операции с элементом, следующим за тем, на
- * который указывает current. (Так как список является односвязным, вы не сможе-
- * те вернуться к предыдущему элементу без полного прохождения всей цепочки.)
- * Также следует предусмотреть возможность вывода содержимого списка (хотя его
- * придется разбить в некоторой точке для вывода на экран). Метод step(), который
- * перемещает current к следующему элементу, тоже может пригодиться.
+ * A circular list is a linked list in which the last link points back to the first link.
+ * There are many ways to design a circular list. Sometimes there is a pointer to
+ * the “start” of the list. However, this makes the list less like a real circle and
+ * more like an ordinary list that has its end attached to its beginning. Make a
+ * class for a singly linked circular list that has no end and no beginning. The
+ * only access to the list is a single reference, current, that can point to any link
+ * on the list. This reference can move around the list as needed. (See
+ * Programming Project 5.5 for a situation in which such a circular list is ideally
+ * suited.) Your list should handle insertion, searching, and deletion. You may
+ * find it convenient if these operations take place one link downstream of the
+ * link pointed to by current. (Because the upstream link is singly linked, you
+ * can’t get at it without going all the way around the circle.) You should also be
+ * able to display the list (although you’ll need to break the circle at some arbitrary
+ * point to print it on the screen). A step() method that moves current
+ * along to the next link might come in handy too.
  */
-public class CyclicLinkList {
+class CyclicLinkList {
     private Node<Integer> current;
     private int size;
 
@@ -26,38 +27,61 @@ public class CyclicLinkList {
      * insert value after current
      */
     void insert(Integer value) {
-        Node<Integer> node = new Node<>(value);
+        Node<Integer> newNode = new Node<>(value);
         if (isEmpty()) {
-            current = node;
-            current.previous = current;
-            current.next = current;
+            newNode.previous = newNode;
+            newNode.next = newNode;
         } else {
-            current.next = node;
-            node.previous = current;
-
-            current.previous = node;
-            node.next = current;
-
-            current = node;
+            current.next.previous = newNode;
+            newNode.next = current.next;
+            current.next = newNode;
+            newNode.previous = current;
         }
 
-//        Node<Integer> node = new Node<>(value, current);
-//        if(isEmpty()) {
-//            current = node;
-//            current.next = current;
-//        }
-//        else current.next = node;
-//        current = node;
+        current = newNode;
         size++;
     }
 
-    void moveForward() {
-
+    CyclicLinkList stepForward() {
+        current = current.next;
+        return this;
     }
 
-    void moveBack() {
-
+    CyclicLinkList stepBack() {
+        current = current.previous;
+        return this;
     }
+
+    int find(int key) {
+        Node<Integer> tmp = this.current;
+        int iterated = size;
+
+        while (iterated != 0) {
+            if (tmp.item.equals(key)) {
+                Log.List.find.found(key);
+                return tmp.item;
+            }
+
+            tmp = tmp.next;
+            iterated--;
+        }
+
+        Log.List.find.notFound(key);
+        return -1;
+    }
+
+    int remove() {
+        Integer result = current.item;
+        Node<Integer> next = current.next;
+        current.previous.next = next;
+        next.previous = current.previous;
+        current = null;
+        current = next;
+        size--;
+        return result;
+    }
+
+
 
     boolean isEmpty() {
         return size == 0;
@@ -66,15 +90,14 @@ public class CyclicLinkList {
     public void display() {
         Node<Integer> tmp = this.current;
         //iterating till first element
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i <= size; i++) {
             tmp = tmp.next;
         }
 
         for (int i = 0; i < size; i++) {
-            System.out.print(tmp + " -> ");
+            if (i == size - 1) System.out.println(tmp);
+            else System.out.print(tmp + " -> ");
             tmp = tmp.next;
         }
-
-
     }
 }

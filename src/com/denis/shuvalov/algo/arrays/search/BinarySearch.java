@@ -11,6 +11,13 @@ public class BinarySearch extends BaseArray
 		super(quantity);
 	}
 
+    public static void main(String[] args) {
+        BinarySearch array = new BinarySearch(10);
+        Helper.fillOrderedValues(array);
+        array.find(8);
+
+    }
+
 	public void insert(int value)
 	{
 		array[size++] = value;
@@ -49,25 +56,17 @@ public class BinarySearch extends BaseArray
 
 		if(value == array[mid])
 		{
-			Log.find.found(value, mid);
-			return mid;
+            Log.Array.find.found(value, mid);
+            return mid;
 		}
 
-		Log.find.notFound(value);
-		return -1;
+        Log.Array.find.notFound(value);
+        return -1;
 	}
 
 	@Override
 	public boolean delete(int value)
 	{
 		return false;
-	}
-
-	public static void main(String[] args)
-	{
-		BinarySearch array = new BinarySearch(10);
-		Helper.fillOrderedValues(array);
-		array.find(8);
-
 	}
 }

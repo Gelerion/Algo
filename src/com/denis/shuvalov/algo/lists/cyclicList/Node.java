@@ -1,15 +1,15 @@
 package com.denis.shuvalov.algo.lists.cyclicList;
 
-class Node<T> {
-    T item;
-    Node<T> next;
-    Node<T> previous;
+public class Node<T> {
+    public T item;
+    public Node<T> next;
+    public Node<T> previous;
 
-    Node(T item) {
+    public Node(T item) {
         this.item = item;
     }
 
-    Node(Node<T> previous, T item, Node<T> next) {
+    public Node(Node<T> previous, T item, Node<T> next) {
         this.previous = previous;
         this.item = item;
         this.next = next;

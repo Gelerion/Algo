@@ -19,14 +19,14 @@ import com.denis.shuvalov.algo.arrays.base.Log;
  * point to print it on the screen). A step() method that moves current
  * along to the next link might come in handy too.
  */
-class CyclicLinkList {
+public class CyclicLinkList {
     private Node<Integer> current;
     private int size;
 
     /**
      * insert value after current
      */
-    void insert(Integer value) {
+    public void insert(Integer value) {
         Node<Integer> newNode = new Node<>(value);
         if (isEmpty()) {
             newNode.previous = newNode;
@@ -42,17 +42,17 @@ class CyclicLinkList {
         size++;
     }
 
-    CyclicLinkList stepForward() {
+    public CyclicLinkList stepForward() {
         current = current.next;
         return this;
     }
 
-    CyclicLinkList stepBack() {
+    public CyclicLinkList stepBack() {
         current = current.previous;
         return this;
     }
 
-    int find(int key) {
+    public int find(int key) {
         Node<Integer> tmp = this.current;
         int iterated = size;
 
@@ -70,7 +70,7 @@ class CyclicLinkList {
         return -1;
     }
 
-    int remove() {
+    public int remove() {
         Integer result = current.item;
         Node<Integer> next = current.next;
         current.previous.next = next;
@@ -81,9 +81,11 @@ class CyclicLinkList {
         return result;
     }
 
+    public int getSize() {
+        return size;
+    }
 
-
-    boolean isEmpty() {
+    public boolean isEmpty() {
         return size == 0;
     }
 

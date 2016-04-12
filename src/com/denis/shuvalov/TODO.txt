@@ -1,0 +1,8 @@
+Array:
+ - queens puzzle
+List:
+ - calculate elements size
+ - check if list is palindrome
+ - kth last element (http://www.growingwiththeweb.com/2015/08/find-the-kth-last-element-in-a-linked-list.html)
+ - nth node from the last of a linked list
+ - reverse list

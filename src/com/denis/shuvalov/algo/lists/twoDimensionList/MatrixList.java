@@ -1,9 +1,9 @@
 package com.denis.shuvalov.algo.lists.twoDimensionList;
 
-public class MatrixList<T> {
+class MatrixList<T> {
     private DimensionList<DimensionList<T>> columns;
 
-    public MatrixList(int rows, int columns) {
+    MatrixList(int rows, int columns) {
         this.columns = new DimensionList<>(columns);
         for (int i = 0; i < columns; i++) {
             this.columns.insert(createRow(rows));

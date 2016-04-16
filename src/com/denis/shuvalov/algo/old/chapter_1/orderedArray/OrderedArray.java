@@ -1,6 +1,6 @@
 package com.denis.shuvalov.algo.old.chapter_1.orderedArray;
 
-import com.denis.shuvalov.algo.HighArray;
+import com.denis.shuvalov.algo.arrays.HighArray;
 
 import java.util.Arrays;
 

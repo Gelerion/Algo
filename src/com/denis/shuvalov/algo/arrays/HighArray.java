@@ -1,4 +1,4 @@
-package com.denis.shuvalov.algo;
+package com.denis.shuvalov.algo.arrays;
 
 public interface HighArray
 {

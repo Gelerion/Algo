@@ -1,6 +1,6 @@
 package com.denis.shuvalov.algo.arrays.base;
 
-import com.denis.shuvalov.algo.HighArray;
+import com.denis.shuvalov.algo.arrays.HighArray;
 
 public abstract class BaseArray implements HighArray
 {

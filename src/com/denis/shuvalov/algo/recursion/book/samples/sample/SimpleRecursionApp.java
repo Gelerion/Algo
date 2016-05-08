@@ -1,4 +1,4 @@
-package com.denis.shuvalov.algo.recursion.sample;
+package com.denis.shuvalov.algo.recursion.book.samples.sample;
 
 import java.io.BufferedReader;
 import java.io.IOException;

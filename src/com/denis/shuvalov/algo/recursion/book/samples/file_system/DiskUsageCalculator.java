@@ -1,4 +1,4 @@
-package com.denis.shuvalov.algo.recursion.file_system;
+package com.denis.shuvalov.algo.recursion.book.samples.file_system;
 
 import java.io.File;
 import java.nio.file.Path;

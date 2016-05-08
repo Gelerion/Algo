@@ -1,4 +1,4 @@
-package com.denis.shuvalov.algo.recursion.ruler;
+package com.denis.shuvalov.algo.recursion.book.samples.ruler;
 
 /**
  * In the case of computing the factorial function, there is no compelling reason for

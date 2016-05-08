@@ -1,4 +1,4 @@
-package com.denis.shuvalov.algo.recursion.sample.binary;
+package com.denis.shuvalov.algo.recursion.book.samples.sample.binary;
 
 /**
  * Computing the sum of one or zero

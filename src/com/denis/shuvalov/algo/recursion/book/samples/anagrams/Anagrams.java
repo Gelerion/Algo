@@ -1,4 +1,4 @@
-package com.denis.shuvalov.algo.recursion.anagrams;
+package com.denis.shuvalov.algo.recursion.book.samples.anagrams;
 
 /**
  * Перестановкой называется расположение объектов в определенном
@@ -18,6 +18,10 @@ public class Anagrams {
 
     public static void main(String[] args) {
         loopAnagram("cats");
+    }
+
+    static void doAnagram() {
+
     }
 
     static void loopAnagram(String word) {

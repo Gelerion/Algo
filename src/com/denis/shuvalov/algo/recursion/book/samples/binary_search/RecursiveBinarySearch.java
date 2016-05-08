@@ -1,4 +1,4 @@
-package com.denis.shuvalov.algo.recursion.binary_search;
+package com.denis.shuvalov.algo.recursion.book.samples.binary_search;
 
 public class RecursiveBinarySearch {
 
@@ -17,6 +17,6 @@ public class RecursiveBinarySearch {
 
     public static void main(String[] args) {
         int[] arr = {2, 4, 5, 6, 7, 8, 12, 14, 17, 19, 22, 25, 27, 28, 33, 37};
-        System.out.println(RecursiveBinarySearch.binarySearch(arr, 38, 0, arr.length - 1) ? "Found" : "Not Found");
+        System.out.println(RecursiveBinarySearch.binarySearch(arr, 33, 0, arr.length - 1) ? "Found" : "Not Found");
     }
 }

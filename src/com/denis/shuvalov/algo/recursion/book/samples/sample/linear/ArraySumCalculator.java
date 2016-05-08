@@ -1,4 +1,4 @@
-package com.denis.shuvalov.algo.recursion.sample.linear;
+package com.denis.shuvalov.algo.recursion.book.samples.sample.linear;
 
 public class ArraySumCalculator {
 

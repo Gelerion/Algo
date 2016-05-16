@@ -16,14 +16,35 @@ package com.denis.shuvalov.algo.recursion.book.samples.anagrams;
  */
 public class Anagrams {
 
+    static int c = 0;
+    static int level;
+
     public static void main(String[] args) {
-        loopAnagram("cats");
+        doAnagram("", "cats");
+        System.out.println("Total Number of Anagrams = " + c);
     }
 
-    static void doAnagram() {
+    static void doAnagram(String s1, String s2) {
+        if (s2.length() <= 1) {
+            c++;
+            System.out.println(s1 + s2);
+        } else {
+            for (int i = 0; i < s2.length(); i++) {
+                System.out.println("s2: " + s2);
+                String x = s2.substring(i, i + 1);
+                String y = s2.substring(0, i);
+                String z = s2.substring(i + 1);
+                System.out.println("x = " + x);
+                System.out.println("y = " + y);
+                System.out.println("z = " + z);
+                System.out.println("doAnagram: (" + s1 + x + " , " + y + z + ") iter: " + i);
+                doAnagram(s1 + x, y + z);
+            }
+        }
 
     }
 
+    //TODO to be implemented
     static void loopAnagram(String word) {
         if (word.isEmpty()) return;
 

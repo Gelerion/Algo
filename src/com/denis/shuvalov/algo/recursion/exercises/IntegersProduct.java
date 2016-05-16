@@ -8,25 +8,16 @@ public class IntegersProduct {
     public static void main(String[] args) {
         System.out.println("Mult: " + multiply(6, 6));
         System.out.println("Div: " + divide(22, 3));
-//        System.out.println("Pow: " + pow(3, 4)); //81
+        System.out.println("Pow: " + pow(5, 8)); //390625
     }
 
-//    private static int pow(int one, int two) {
-//        if(two == 0) return 1;
-//        int mult = multiply(one, one);
-//        return inPow(one, mult);
-//
-//
-//
-//
-//        if(two == 0) return 1;
-//        int multiply = multiply(one, one);
-//        System.out.println("multiply = " + multiply);
-//        return multiply(one, one) + pow(one, --two);
-//    }
+    private static int pow(int one, int second) {
+        return doPow(one, one, --second);
+    }
 
-    private static int inPow(int one, int count) {
-        return multiply(one, count);
+    private static int doPow(int one, int multCnt, int total) {
+        if (total == 1) return multiply(one, multCnt);
+        return doPow(multiply(one, multCnt), multCnt, --total);
     }
 
     private static int divide(int one, int two) {

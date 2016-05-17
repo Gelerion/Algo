@@ -16,8 +16,10 @@ public class Subsets {
         set.add(1);
         set.add(2);
         set.add(3);
-        System.out.println(powerSet(set));
-        System.out.println(customSubSet(set));
+//        System.out.println(powerSet(set));
+//        System.out.println(customSubSet(set));
+
+        System.out.println("\n" + createSubsetUsingTree("abc"));
 
 //        ArrayList<String> list = new ArrayList<>();
 //        list.add("a");
@@ -163,6 +165,36 @@ public class Subsets {
         System.out.println("End loop");
 
         System.out.println("result = " + result);
+        return result;
+    }
+
+    static List<String> createSubsetUsingTree(String str) {
+        List<String> result = new ArrayList<>(); // take set if you want unique results.
+        result.add("[]");
+
+        if (str != null && str.length() > 0) {
+
+            for (int i = 0; i < str.length(); i++) {
+                //Working on str.charAt(i);
+                //Store the result of subset of str.charAt(i) in tempList.
+                List<String> tempList = new ArrayList<>();
+
+                for (String val : result) {
+                    // If val is [], it means str.charAt(i) is not included, So include it in result.
+                    if (val.equals("[]")) {
+                        tempList.add("[" + str.charAt(i) + "]");
+                    } else {
+                        //For each item, there will be 2 subset, one including it and one without including it.
+                        //If val is not [], it means it already contain some subset without str.charAt(i), So just include it.
+                        tempList.add("[" + val.substring(1, val.length() - 1) + ", " + str.charAt(i) + "]");
+                    }
+                }
+
+                //Add all subsets present in tempList to final result.
+                result.addAll(tempList);
+            }
+        }
+
         return result;
     }
 }

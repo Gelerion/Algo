@@ -3,6 +3,9 @@ package com.denis.shuvalov.algo.adt.positionList.list;
 import com.denis.shuvalov.algo.adt.positionList.Position;
 import com.denis.shuvalov.algo.adt.positionList.PositionalList;
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 /**
  * size( ) O(1)
  * isEmpty( ) O(1)
@@ -105,6 +108,11 @@ public class LinkedPositionalList<E> implements PositionalList<E> {
         return answer;
     }
 
+    public Iterable<Position<E>> positions() {
+//        return new LinkedPositionIterable();
+        return null;
+    }
+
     private Position<E> addBetween(Node<E> previous, E element, Node<E> next) {
         Node<E> newest = new Node<>(previous, element, next);
         previous.setNext(newest);
@@ -195,6 +203,32 @@ public class LinkedPositionalList<E> implements PositionalList<E> {
         @Override
         public String toString() {
             return element.toString();
+        }
+    }
+
+    private class PositionIterator implements Iterator<Position<E>> {
+        private Position<E> cursor = first();
+        private Position<E> recent;
+
+
+        @Override
+        public boolean hasNext() {
+            return cursor != null;
+        }
+
+        @Override
+        public Position<E> next() {
+            if (cursor == null) throw new NoSuchElementException("nothing left");
+            this.recent = this.cursor;
+            this.cursor = after(this.recent);
+            return recent;
+        }
+
+        @Override
+        public void remove() {
+            if (recent == null) throw new IllegalStateException("nothing to remove");
+            LinkedPositionalList.this.remove(recent);
+            recent = null; // do not allow remove again until next is called
         }
     }
 }

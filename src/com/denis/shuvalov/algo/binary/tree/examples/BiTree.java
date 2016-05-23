@@ -1,4 +1,4 @@
-package com.denis.shuvalov.algo.binary.tree;
+package com.denis.shuvalov.algo.binary.tree.examples;
 
 public class BiTree {
     private BiTreeNode root;
@@ -6,7 +6,6 @@ public class BiTree {
     public BiTreeNode find(int key) {
         System.out.println("--- Find ---");
         BiTreeNode current = root;
-
 
         while (current.getKey() != key) {
             System.out.println(current.getKey() + " > " + key);
@@ -67,7 +66,85 @@ public class BiTree {
     public void delete(int id) {
         BiTreeNode current = root, parent = current;
 
+        while (current.getKey() != id) {
+            if (current.getKey() > id) {
+                parent = current;
+                current = current.getLeftChild();
+            } else {
+                parent = current;
+                current = current.getRightChild();
+            }
 
+            if (current == null) {
+                System.out.println("--- Not Found ---");
+                return;
+            }
+        }
+
+        if (current == root) {
+            System.out.println("--- Found and deleted (root) ---");
+            root = null;
+            return;
+        }
+
+        //leaf
+        if (current.getRightChild() == null && current.getLeftChild() == null) {
+            System.out.println("--- Found and deleted (leaf)---");
+            if (parent.getLeftChild() == current) parent.setLeftChild(null);
+            else parent.setRightChild(null);
+            return;
+        }
+        // only left child exist
+        else if (current.getRightChild() == null) {
+            System.out.println("--- Found and deleted (assigned to parent's left)---");
+            if (parent.getLeftChild() == current) parent.setLeftChild(current.getLeftChild());
+            else parent.setRightChild(current.getLeftChild());
+            return;
+        } else if (current.getLeftChild() == null) {
+            System.out.println("--- Found and deleted (assigned to parent's right)---");
+            if (parent.getLeftChild() == current) parent.setLeftChild(current.getRightChild());
+            else parent.setRightChild(current.getRightChild());
+            return;
+        }
+
+        System.out.println("--- Node " + id + " has two successors ---");
+        BiTreeNode successor = getSuccessor(current);
+        System.out.println("parent = " + parent);
+        System.out.println("current = " + current);
+        System.out.println("successor = " + successor);
+
+        if (current == root) root = successor;
+        else if (parent.getRightChild() == current) {
+            parent.setRightChild(successor);
+            successor.setLeftChild(current.getLeftChild());
+        } else {
+            parent.setLeftChild(successor);
+            successor.setLeftChild(current.getLeftChild());
+        }
+
+    }
+
+    // Метод возвращает узел со следующим значением после node.
+    // Для этого он сначала переходит к правому потомку, а затем
+    // отслеживает цепочку левых потомков этого узла.
+    private BiTreeNode getSuccessor(BiTreeNode node) {
+        BiTreeNode successorParent = node;
+        BiTreeNode successor = node;
+        BiTreeNode current = node.getRightChild();
+
+        while (current != null) {
+            successorParent = successor;
+            successor = current;
+            current = current.getLeftChild();
+        }
+
+        // Если преемник не является правым потомком, создать связи между узлами
+        if (node.getRightChild() != successor) {
+            successorParent.leftChild = successor.rightChild;
+            successor.rightChild = node.rightChild;
+        }
+
+        return successor;
     }
 
     public BiTreeNode minimum() {
@@ -114,5 +191,9 @@ public class BiTree {
         postorder0(node.getLeftChild());
         postorder0(node.getRightChild());
         System.out.println("node = " + node);
+    }
+
+    public void display() {
+        BTreePrinter.printNode(root);
     }
 }

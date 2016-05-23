@@ -1,4 +1,4 @@
-package com.denis.shuvalov.algo.binary.tree;
+package com.denis.shuvalov.algo.binary.tree.examples;
 
 public class BiTreeNode {
     int key; // Данные, используемые в качестве ключа

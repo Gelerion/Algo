@@ -1,7 +1,6 @@
 package com.denis.shuvalov.algo.binary.tree.exercises.letter.tree;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -30,9 +29,9 @@ public class LetterTree {
      * (index-1) / 2
      */
     public void addSentenceAnotherWay(String sentence) {
-        LetterTree[] forest = new LetterTree[sentence.length()];
+        LetterTree[] forest = new LetterTree[Math.round((float) sentence.length() / 2)];
 
-        int capacity = sentence.length() - 1;
+        int capacity = sentence.length();
         int indx = 0;
         for (int i = 0; i < capacity / 2; i++) {
             forest[i] = new LetterTree();
@@ -41,15 +40,37 @@ public class LetterTree {
         }
 
         if (capacity % 2 != 0) {
-            int i = capacity / 2 + 1;
+            int i = capacity / 2;
             forest[i] = new LetterTree();
             forest[i].root.left = new LetterNode().setValue(sentence.charAt(indx++));
-            forest[i].root.right = new LetterNode().setValue(sentence.charAt(indx));
         }
 
+        int totalSuccessors = forest.length;
 
-        System.out.println("forest = " + Arrays.toString(forest));
+        root = combineTrees(Math.round((float) totalSuccessors / 2), forest, forest.length - 1).root;
 
+    }
+
+    private LetterTree combineTrees(int depth, LetterTree[] forest, int treeIndex) {
+        if (depth == 1) {
+            LetterTree result = new LetterTree();
+            result.root.setLeft(forest[treeIndex--].root);
+            if (treeIndex >= 0) result.root.setRight(forest[treeIndex].root);
+            return result;
+        }
+
+        LetterTree[] tmp = new LetterTree[depth];
+        for (int i = 0; i < depth; i++) {
+            LetterTree current = new LetterTree();
+            current.root.setRight(forest[treeIndex--].root);
+            if (treeIndex >= 0) {
+                current.root.setLeft(forest[treeIndex--].root);
+            }
+            tmp[i] = current;
+        }
+
+        int totalSuccessors = tmp.length;
+        return combineTrees(Math.round((float) totalSuccessors / 2), tmp, tmp.length - 1);
     }
 
     public void addSentence(String sentence) {
@@ -146,7 +167,7 @@ public class LetterTree {
         }
     }
 
-    private static class LetterNode {
+    static class LetterNode {
         private char value;
         private LetterNode left;
         private LetterNode right;
@@ -184,7 +205,7 @@ public class LetterTree {
         }
     }
 
-    private static class Printer {
+    static class Printer {
         public static void printNode(LetterNode root) {
             int maxLevel = Printer.maxLevel(root);
 

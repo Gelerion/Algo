@@ -6,3 +6,12 @@ List:
  - kth last element (http://www.growingwiththeweb.com/2015/08/find-the-kth-last-element-in-a-linked-list.html)
  - nth node from the last of a linked list
  - reverse list
+String:
+ - case-insensitive comparison
+ - split a string by commas
+
+Google:
+ - remove duplicates from a list of strings which is larger than the available memory (i.e. with reloads from disk)
+ - count the number of disjoint objects in a bitmap
+ - implement a program which plays tic-tac-toe
+ - sort very large file

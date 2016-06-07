@@ -32,7 +32,7 @@ public class RBTree<V extends Comparable<V>> {
                     System.out.println("\t\tLeft child is empty adding node");
                     currentNode.setLeft(newest);
                     newest.setParent(currentNode);
-                    checkCorrectness(currentNode, depth, true);
+                    validateTree(currentNode, 0);
                     return;
                 } else {
                     depth++;
@@ -45,6 +45,7 @@ public class RBTree<V extends Comparable<V>> {
                 if (currentNode.getRight() == null) {
                     System.out.println("\t\tRight child is empty adding node");
                     currentNode.setRight(newest);
+                    validateTree(currentNode, 0);
                     return;
                 } else {
                     depth++;
@@ -55,12 +56,117 @@ public class RBTree<V extends Comparable<V>> {
         }
     }
 
+    private void validateTree(RBNode<V> current, int iteration) {
+        if (current == null) {
+            System.out.println("\tTree is valid");
+            return;
+        }
+
+        System.out.println("\t\tValidating tree, Current " + current);
+
+        if (current == root) {
+            if (current.getColor() == Color.RED) {
+                System.out.println("\t\tRoot color isn't black, flipping");
+                current.setColor(Color.BLACK);
+            }
+
+            System.out.println("\tTree is valid");
+            return;
+        }
+
+        if (hasTwoChilds(current.getParent())) {
+            System.out.println("\t\tParent " + current.getParent() + " has two childs");
+
+            if (bothChildsRed(current.getParent())) {
+                System.out.println("\t\tBoth childs are with Red color");
+
+                if (iteration >= 1) {
+                    System.out.println("ITERATION " + iteration);
+//                    System.out.println("\t\tTree is valid");
+                } else {
+                    flipColorsWithChilds(current.getParent());
+                    validateTree(current.getParent(), ++iteration);
+                }
+            } else {
+
+                if (isRedParent(current)) {
+
+                    if (current.getParent() == root) {
+                        System.out.println("\t\tRoot is Red switching color");
+                        doFlip(current.getParent());
+                        validateTree(current.getParent(), ++iteration);
+                        return;
+                    }
+
+                    if (current.getColor() == Color.BLACK) {
+                        System.out.println("\tTree is valid");
+                    } else {
+                        System.out.println("\t\tOne Red child and one Black");
+
+                        if (bothChildsRed(current.getParent().getParent())) {
+                            System.out.println("\t\tGrandfather has two red childs: " + current.getParent().getParent() + " Parent " + current.getParent());
+                            flipColorsWithChilds(current.getParent().getParent());
+                            validateTree(current.getParent().getParent(), ++iteration);
+                        } else {
+                            System.out.println("\t\tTwo red nodes in a line Parent: " + current.getParent() + " Child " + current);
+                            if (isLeftNode(current.getParent(), current)) {
+                                System.out.println("\t\tCurrent node is left (outer) to his parent, rotating to right");
+                                rotateToRight(current.getParent());
+                                validateTree(current.getParent(), ++iteration);
+                            }
+                        }
+                    }
+                } else {
+                    System.out.println("\t\tBoth childs are Black");
+                    //black - red relations
+                    validateTree(current.getParent(), ++iteration);
+                }
+            }
+        } else if (current.getLeft() != null && current.getColor() == Color.RED) { //only one child
+            System.out.println("\t\tCurrent and left child node are red");
+            flipColorsWithChilds(current.getParent());
+            rotateToRight(current);
+            validateTree(current.getParent(), ++iteration);
+        } else if (current.getRight() != null && current.getColor() == Color.RED) {
+            System.out.println("\t\tCurrent and right child node are red");
+            flipColorsWithChilds(current.getParent());
+            rotateToLeft(current);
+            validateTree(current.getParent(), ++iteration);
+        }
+    }
+
+    private boolean parentNotRoot(RBNode<V> node) {
+        return node == root;
+    }
+
+    private boolean isRedParent(RBNode<V> node) {
+        return node.getParent() != null && node.getParent().getColor() == Color.RED;
+    }
+
+    private void flipColorsWithChilds(RBNode<V> node) {
+        if (hasTwoChilds(node)) {
+            System.out.println("\t\t\tFlipping colors for node with two childs with same colors");
+            doFlip(node);
+            doFlip(node.getLeft());
+            doFlip(node.getRight());
+        } else if (node.getLeft() != null) {
+            System.out.println("\t\t\tFlipping colors for node with one left child");
+            doFlip(node);
+            doFlip(node.getLeft());
+        } else {
+            System.out.println("\t\t\tFlipping colors for node with one right child");
+            doFlip(node);
+            doFlip(node.getRight());
+        }
+    }
+
+    //Early version
     private void checkCorrectness(RBNode<V> father, int depth, boolean isLeft) {
         if (depth == 0) {
             System.out.println("\t\tInserting after root -> correct\n");
         } else /*if(depth == 1)*/ {
 
-            if (haveTwoChilds(father.getParent())) {
+            if (hasTwoChilds(father.getParent())) {
                 System.out.println("\t\tFather " + father + " have two childs");
 
                 flipColors(father);
@@ -76,7 +182,28 @@ public class RBTree<V extends Comparable<V>> {
                         System.out.println("STILL BLACK BUG?");
                     }
                 } else {
-                    System.out.println("NOT ROOT CHECK IF CORRECT");
+                    RBNode<V> grandFatherParent = grandFather.getParent();
+                    System.out.println("Grand: " + grandFatherParent);
+                    System.out.println("Father: " + grandFather);
+
+                    if (bothChildsRed(grandFatherParent)) {
+                        System.out.println("\t\t\tBoth childs are " + Color.RED + " flipping colors");
+                        doFlip(grandFatherParent);
+                        doFlip(grandFatherParent.getLeft());
+                        doFlip(grandFatherParent.getRight());
+                    }
+
+
+                    if (grandFatherParent.getColor() == Color.RED && grandFather.getColor() == Color.RED) {
+                        if (grandFatherParent.getLeft() == grandFather) { //left (outer) child
+                            System.out.println("Both red, rotate to right");
+                            rotateToRight(grandFatherParent);
+                        }
+
+
+                    }
+
+//                    checkCorrectness(father.getParent(), depth - 1, isLeft);
                 }
             } else {
                 if (father.getColor() == Color.RED) {
@@ -93,9 +220,26 @@ public class RBTree<V extends Comparable<V>> {
         }
     }
 
+    private boolean bothChildsRed(RBNode<V> node) {
+        return node != null && node.getLeft().getColor() == Color.RED && node.getRight().getColor() == Color.RED;
+    }
+
     private void rotateToRight(RBNode<V> node) {
         RBNode<V> parent = node.getParent();
         System.out.println("\t\t\tRotate " + parent + " to right");
+        boolean isLeftSet = false;
+
+        if (hasTwoChilds(node)) {
+            RBNode<V> innerRightChild = node.getRight();
+            RBNode<V> outerLeftCHild = node.getLeft();
+
+            doFlip(node);
+            doFlip(parent);
+
+            parent.setLeft(innerRightChild);
+            innerRightChild.setParent(parent);
+            isLeftSet = true;
+        }
 
         node.setRight(parent);
 
@@ -114,8 +258,7 @@ public class RBTree<V extends Comparable<V>> {
         }
 
         parent.setParent(node);
-        //TODO: possible bug?
-        parent.setLeft(null);
+        if (!isLeftSet) parent.setLeft(null);
 
         if (parent == root) {
             root = node.setParent(null);
@@ -125,6 +268,11 @@ public class RBTree<V extends Comparable<V>> {
 
     }
 
+    private void rotateToLeft(RBNode<V> node) {
+        RBNode<V> parent = node.getParent();
+        System.out.println("\t\t\tRotate " + parent + " to left");
+    }
+
     private boolean isLeftNode(RBNode<V> parent, RBNode<V> child) {
         return parent.getLeft() == child;
     }
@@ -132,7 +280,7 @@ public class RBTree<V extends Comparable<V>> {
     private void flipColors(RBNode<V> node) {
         RBNode<V> parent = node.getParent();
 
-        if (haveTwoChilds(parent)) {
+        if (hasTwoChilds(parent)) {
             RBNode<V> parentsLeft = parent.getLeft();
             RBNode<V> parentsRight = parent.getRight();
 
@@ -149,7 +297,7 @@ public class RBTree<V extends Comparable<V>> {
         }
     }
 
-    private boolean haveTwoChilds(RBNode<V> parent) {
+    private boolean hasTwoChilds(RBNode<V> parent) {
         return parent.getLeft() != null && parent.getRight() != null;
     }
 

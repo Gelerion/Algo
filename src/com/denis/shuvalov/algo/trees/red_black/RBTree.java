@@ -34,25 +34,46 @@ public class RBTree<V extends Comparable<V>> {
                     newest.setParent(currentNode);
                     validateTree(currentNode, 0);
                     return;
-                } else {
+                }
+                else {
                     depth++;
+                    if(depth > 15){
+                        System.out.println("TO DEPTH BUG!!!!!!!!!!!!!!!!!!");
+                        break;
+                    }
                     currentNode = currentNode.getLeft();
                 }
 
-            } else {
+            }
+            else if(currentValue.compareTo(value) < 0) {
                 System.out.println("\tYes. Going to right child");
 
                 if (currentNode.getRight() == null) {
                     System.out.println("\t\tRight child is empty adding node");
                     currentNode.setRight(newest);
+                    newest.setParent(currentNode);
                     validateTree(currentNode, 0);
                     return;
-                } else {
+                }
+                else {
                     depth++;
                     currentNode = currentNode.getRight();
                     newest.setParent(currentNode);
                 }
+            } else {
+                System.out.println("\tDuplicate value");
+                break;
             }
+        }
+    }
+
+    private void sleep(int i) {
+
+        try {
+            Thread.sleep(i);
+        }
+        catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
@@ -82,12 +103,14 @@ public class RBTree<V extends Comparable<V>> {
 
                 if (iteration >= 1) {
                     System.out.println("ITERATION " + iteration);
-//                    System.out.println("\t\tTree is valid");
-                } else {
+                    System.out.println("\t\tTree is valid");
+                }
+                else {
                     flipColorsWithChilds(current.getParent());
                     validateTree(current.getParent(), ++iteration);
                 }
-            } else {
+            }
+            else {
 
                 if (isRedParent(current)) {
 
@@ -100,38 +123,128 @@ public class RBTree<V extends Comparable<V>> {
 
                     if (current.getColor() == Color.BLACK) {
                         System.out.println("\tTree is valid");
-                    } else {
+                    }
+                    else {
                         System.out.println("\t\tOne Red child and one Black");
 
                         if (bothChildsRed(current.getParent().getParent())) {
-                            System.out.println("\t\tGrandfather has two red childs: " + current.getParent().getParent() + " Parent " + current.getParent());
+                            System.out.println("\t\tGrandfather has two red childs. Grand " + current.getParent().getParent()
+                                    + " Left " + current.getParent().getParent().getLeft()
+                                    + " Right " + current.getParent().getParent().getRight());
                             flipColorsWithChilds(current.getParent().getParent());
                             validateTree(current.getParent().getParent(), ++iteration);
-                        } else {
+                        }
+                        else {
                             System.out.println("\t\tTwo red nodes in a line Parent: " + current.getParent() + " Child " + current);
+
+//                            if(childIsInnerToGrandfather(current.getParent().getParent(), current.getParent())) {
+//
+//                            }
+
                             if (isLeftNode(current.getParent(), current)) {
                                 System.out.println("\t\tCurrent node is left (outer) to his parent, rotating to right");
                                 rotateToRight(current.getParent());
                                 validateTree(current.getParent(), ++iteration);
                             }
+                            else if (isRightNode(current.getParent(), current)) {
+                                System.out.println("\t\tCurrent node is right (outer) to his parent, rotating to right");
+                                rotateToLeft(current.getParent());
+                                validateTree(current.getParent(), ++iteration);
+                            }
                         }
                     }
-                } else {
+                }
+                else {
                     System.out.println("\t\tBoth childs are Black");
                     //black - red relations
                     validateTree(current.getParent(), ++iteration);
                 }
             }
-        } else if (current.getLeft() != null && current.getColor() == Color.RED) { //only one child
-            System.out.println("\t\tCurrent and left child node are red");
-            flipColorsWithChilds(current.getParent());
-            rotateToRight(current);
-            validateTree(current.getParent(), ++iteration);
-        } else if (current.getRight() != null && current.getColor() == Color.RED) {
+        }
+        else if (current.getLeft() != null && current.getColor() == Color.RED) { //only one child
+            System.out.println("\t\tCurrent and left child are red");
+
+            if (current.getParent() != null && iteration == 0) {
+                System.out.println("\t\tChecking if new node is inner or outer to his grandfather");
+
+                if (childIsInnerToGrandfather(current.getParent(), current)) {
+                    System.out.println("\t\t\tYes, child is Inner, flip colors and rotate");
+                    flipColorsWithChilds(current.getParent());
+                    rotateToRight(current);
+                    validateTree(current.getParent(), ++iteration);
+                } else {
+                    System.out.println("\t\t\tNo, child is Outer, moving UP child and rotating");
+                    upChildNode(current, true);
+                    current = current.getParent(); //child uped
+                    doFlip(current.getParent());
+                    rotateToLeft(current);
+                    doFlip(current);
+                    validateTree(current.getParent(), ++iteration);
+                }
+            }
+            else {
+                flipColorsWithChilds(current.getParent());
+                rotateToRight(current);
+                validateTree(current.getParent(), ++iteration);
+            }
+
+        }
+        else if (current.getRight() != null && current.getColor() == Color.RED) {
             System.out.println("\t\tCurrent and right child node are red");
-            flipColorsWithChilds(current.getParent());
-            rotateToLeft(current);
-            validateTree(current.getParent(), ++iteration);
+
+            if (current.getParent() != null && iteration == 0) {
+                System.out.println("\t\tChecking if new node is inner or outer to his grandfather");
+
+                if (childIsInnerToGrandfather(current.getParent(), current)) {
+                    System.out.println("\t\t\tYes, child is Inner, flip colors and rotate");
+                    flipColorsWithChilds(current.getParent());
+                    rotateToLeft(current);
+                    validateTree(current.getParent(), ++iteration);
+                }
+                else {
+                    System.out.println("\t\t\tNo, child is Outer, moving UP child and rotating");
+                    upChildNode(current, false);
+                    current = current.getParent(); //child uped
+                    doFlip(current.getParent());
+                    rotateToRight(current);
+                    doFlip(current);
+                    validateTree(current.getParent(), ++iteration);
+                }
+            }
+            else {
+                flipColorsWithChilds(current.getParent());
+                rotateToLeft(current);
+                validateTree(current.getParent(), ++iteration);
+            }
+        }
+    }
+
+    private void upChildNode(RBNode<V> node, boolean leftChild) {
+        if (leftChild) {
+            RBNode<V> child = node.getLeft();
+            child.setRight(node);
+            child.setParent(node.getParent());
+            node.setParent(child);
+            //TODO: check if correct!
+            node.setLeft(null);
+        }
+        else {
+            RBNode<V> child = node.getRight();
+            child.setLeft(node);
+            child.setParent(node.getParent());
+            node.setParent(child);
+            //TODO: check if correct!
+//            node.getParent().setLeft(child);
+            node.setRight(null);
+        }
+    }
+
+    private boolean childIsInnerToGrandfather(RBNode<V> grand, RBNode<V> parent) {
+        if (grand.getLeft() == parent) {
+            return parent.getRight() == null;
+        }
+        else {
+            return parent.getLeft() == null;
         }
     }
 
@@ -149,11 +262,13 @@ public class RBTree<V extends Comparable<V>> {
             doFlip(node);
             doFlip(node.getLeft());
             doFlip(node.getRight());
-        } else if (node.getLeft() != null) {
+        }
+        else if (node.getLeft() != null) {
             System.out.println("\t\t\tFlipping colors for node with one left child");
             doFlip(node);
             doFlip(node.getLeft());
-        } else {
+        }
+        else {
             System.out.println("\t\t\tFlipping colors for node with one right child");
             doFlip(node);
             doFlip(node.getRight());
@@ -164,7 +279,8 @@ public class RBTree<V extends Comparable<V>> {
     private void checkCorrectness(RBNode<V> father, int depth, boolean isLeft) {
         if (depth == 0) {
             System.out.println("\t\tInserting after root -> correct\n");
-        } else /*if(depth == 1)*/ {
+        }
+        else /*if(depth == 1)*/ {
 
             if (hasTwoChilds(father.getParent())) {
                 System.out.println("\t\tFather " + father + " have two childs");
@@ -177,11 +293,13 @@ public class RBTree<V extends Comparable<V>> {
                         System.out.println("\t\tRoot flipped color, changing to be " + Color.BLACK);
                         grandFather.setColor(Color.BLACK);
                         System.out.println("\t\tInserting new node -> correct\n");
-                    } else {
+                    }
+                    else {
                         //TODO: still black?
                         System.out.println("STILL BLACK BUG?");
                     }
-                } else {
+                }
+                else {
                     RBNode<V> grandFatherParent = grandFather.getParent();
                     System.out.println("Grand: " + grandFatherParent);
                     System.out.println("Father: " + grandFather);
@@ -205,7 +323,8 @@ public class RBTree<V extends Comparable<V>> {
 
 //                    checkCorrectness(father.getParent(), depth - 1, isLeft);
                 }
-            } else {
+            }
+            else {
                 if (father.getColor() == Color.RED) {
                     System.out.println("\t\tParent have one child with RED color");
                     flipColors(father);
@@ -226,7 +345,7 @@ public class RBTree<V extends Comparable<V>> {
 
     private void rotateToRight(RBNode<V> node) {
         RBNode<V> parent = node.getParent();
-        System.out.println("\t\t\tRotate " + parent + " to right");
+        System.out.println("\t\t\tRotate " + parent + " to Right");
         boolean isLeftSet = false;
 
         if (hasTwoChilds(node)) {
@@ -251,7 +370,8 @@ public class RBTree<V extends Comparable<V>> {
             if (isLeftNode(grand, parent)) {
                 System.out.println("\t\t\t\tSet left child to " + node);
                 grand.setLeft(node);
-            } else {
+            }
+            else {
                 System.out.println("\t\t\t\tSet right child to " + node);
                 grand.setRight(node);
             }
@@ -270,11 +390,56 @@ public class RBTree<V extends Comparable<V>> {
 
     private void rotateToLeft(RBNode<V> node) {
         RBNode<V> parent = node.getParent();
-        System.out.println("\t\t\tRotate " + parent + " to left");
+        System.out.println("\t\t\tRotate " + parent + " to Left");
+        boolean isRightSet = false;
+
+        if (hasTwoChilds(parent)) {
+            RBNode<V> innerLeftChild = node.getLeft();
+
+            doFlip(node);
+            doFlip(parent);
+
+            parent.setRight(innerLeftChild);
+            innerLeftChild.setParent(parent);
+            isRightSet = true;
+        }
+
+        node.setLeft(parent);
+
+        if (parent.getParent() != null) {
+            RBNode<V> grand = parent.getParent();
+            System.out.println("\t\t\tChanging references to the parent " + grand);
+            node.setParent(grand);
+
+            if (isLeftNode(grand, parent)) {
+                System.out.println("\t\t\t\tSet left child to " + node);
+                grand.setLeft(node);
+            }
+            else {
+                System.out.println("\t\t\t\tSet right child to " + node);
+                grand.setRight(node);
+            }
+        }
+
+        parent.setParent(node);
+
+        //TODO hold this
+//        parent.setLeft(null);
+        if (!isRightSet) parent.setRight(null);
+
+        if (parent == root) {
+            root = node.setParent(null);
+            System.out.println("\t\t\tNew root " + node
+                    + ", left node " + node.getLeft() + ", right node " + node.getRight());
+        }
     }
 
     private boolean isLeftNode(RBNode<V> parent, RBNode<V> child) {
         return parent.getLeft() == child;
+    }
+
+    private boolean isRightNode(RBNode<V> parent, RBNode<V> current) {
+        return parent.getRight() == current;
     }
 
     private void flipColors(RBNode<V> node) {
@@ -291,7 +456,8 @@ public class RBTree<V extends Comparable<V>> {
                 doFlip(parentsLeft);
                 doFlip(parentsRight);
             }
-        } else {
+        }
+        else {
             doFlip(node);
             doFlip(node.getParent());
         }

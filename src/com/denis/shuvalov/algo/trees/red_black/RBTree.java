@@ -137,20 +137,28 @@ public class RBTree<V extends Comparable<V>> {
                         else {
                             System.out.println("\t\tTwo red nodes in a line Parent: " + current.getParent() + " Child " + current);
 
-//                            if(childIsInnerToGrandfather(current.getParent().getParent(), current.getParent())) {
-//
-//                            }
+                            if (childIsInnerToGrandfather(current.getParent().getParent(), current.getParent())) {
+                                System.out.println("\t\t\tChild is Inner, flip colors and rotate");
+                                if (isLeftNode(current.getParent(), current)) {
+                                    System.out.println("\t\t\tCurrent node is left (outer) to his parent, rotating to right");
+                                    rotateToRight(current.getParent());
+                                    validateTree(current.getParent(), ++iteration);
+                                }
+                                else if (isRightNode(current.getParent(), current)) {
+                                    System.out.println("\t\t\tCurrent node is right (outer) to his parent, rotating to right");
+                                    rotateToLeft(current.getParent());
+                                    validateTree(current.getParent(), ++iteration);
+                                }
+                            }
+                            else {
+                                System.out.println("\t\t\tChild is Outer, moving UP child and rotating");
+                                System.out.println("HERE");
+                                upChildNode(current.getParent(), false);
+                                current = current.getParent(); //child uped
+                                doFlip(current.getParent());
+                                System.out.println("HERE");
+                            }
 
-                            if (isLeftNode(current.getParent(), current)) {
-                                System.out.println("\t\tCurrent node is left (outer) to his parent, rotating to right");
-                                rotateToRight(current.getParent());
-                                validateTree(current.getParent(), ++iteration);
-                            }
-                            else if (isRightNode(current.getParent(), current)) {
-                                System.out.println("\t\tCurrent node is right (outer) to his parent, rotating to right");
-                                rotateToLeft(current.getParent());
-                                validateTree(current.getParent(), ++iteration);
-                            }
                         }
                     }
                 }

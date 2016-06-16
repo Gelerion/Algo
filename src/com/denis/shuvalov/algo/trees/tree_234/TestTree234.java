@@ -13,6 +13,17 @@ public class TestTree234 {
 
         tree.insert(25);
 
-        tree.display();
+        tree.insert(90);
+        tree.insert(100);
+        tree.insert(110);
+        tree.insert(120);
+        tree.insert(130);
+        tree.insert(140);
+        tree.insert(150);
+        tree.insert(34);
+        tree.insert(26);
+
+//        tree.display();
+        tree.displayTree();
     }
 }

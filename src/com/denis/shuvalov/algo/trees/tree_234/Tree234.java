@@ -1,63 +1,60 @@
 package com.denis.shuvalov.algo.trees.tree_234;
 
 import java.util.Arrays;
+import java.util.DuplicateFormatFlagsException;
 
-public class Tree234<T extends Comparable<T>> {
+class Tree234<T extends Comparable<T>> {
     private static final int A = 0;
     private static final int B = 1;
     private static final int C = 2;
 
-    private Node234<T> root;
+    private static final int FIRST = 0;
+    private static final int SECOND = 1;
+    private static final int THIRD = 2;
+    private static final int FOURTH = 3;
 
+    private Node234<T> root = new Node234<>();
 
-    void insert(T value) {
-
-        if (root == null) {
-            root = new Node234<>(value);
-            return;
-        }
-
-        if (root.isLeaf() && root.size < 2) {
-            root.add(value);
-            return;
-        }
-
+    void find(T elem) {
         Node234<T> current = root;
+        doFind(current, elem);
+    }
 
-        while (true) {
-            if (current.isFull()) {
-//                splitRoot(current);
-                split(current).add(value);
-                break;
-            }
+    private void doFind(Node234<T> node, T elem) {
+        if (node == null) {
+            System.out.println("Element not found");
+            return;
+        }
 
-            if (current.isLeaf()) {
-                current.add(value);
-                break;
-            }
 
-            current = advance(current, value);
+    }
+
+    void insert(T elem) {
+        Node234<T> current = root;
+        doInsert(current, elem);
+    }
+
+    private void doInsert(Node234<T> node, T elem) {
+        if (node.isFull()) {
+            split(node);
+            doInsert(advance(node.getParent(), elem), elem);
+        }
+        else if (node.isLeaf()) {
+            node.add(elem);
+        }
+        else { // Узел не полный и не листовой; спуститься уровнем ниже
+            doInsert(advance(node, elem), elem);
         }
     }
 
     private Node234<T> advance(Node234<T> node, T value) {
-//        System.out.println("Node size: " + node.getSize());
-        Node234<T> result = null;
-        if (node.getSize() == 1) { //only one element
-
-            if (node.getFirstItem().compareTo(value) >= 1) {
-                result = node.getLoverThenFirstValueChild();
-            }
-            else if (node.getFirstItem().compareTo(value) <= 1) {
-                result = node.getBiggerThanFirstAndLoverThenSecondValueChild();
-            }
-            else {
-                System.out.println("[WARN] Duplicate value not allowed: " + node + " Value: " + value);
-            }
-
+        int nextIndex;
+        for (nextIndex = 0; nextIndex < node.getSize(); nextIndex++) {
+            if (node.getValue(nextIndex).compareTo(value) >= 1)
+                return node.getChild(nextIndex);
         }
 
-        return result;
+        return node.getChild(nextIndex);
     }
 
     /**
@@ -68,49 +65,34 @@ public class Tree234<T extends Comparable<T>> {
      * - Элемент данных A остается на своем месте.
      * - Два правых потомка отсоединяются от разбиваемого узла и связываются с но-
      * вым узлом.
-     *
-     * @return Node to insert
      */
-    private Node234<T> split(Node234<T> node) {
-        Node234<T> parent = node.getParent();
+    private void split(Node234<T> current) {
+        Node234<T> parent;
 
-        if (parent == null) {
-            parent = new Node234<>(node.removeValue(B));
+        Node234<T> newRight = new Node234<>(current.removeValue(C))
+                .addChild(FIRST, current.removeChild(THIRD))
+                .addChild(SECOND, current.removeChild(FOURTH));
+
+        if (current == root) {
+            parent = new Node234<>();
+            root = parent;
+            parent.addChild(FIRST, current);
         }
         else {
-            parent.add(node.removeValue(B));
+            parent = current.getParent();
         }
 
-        Node234<T> brother = new Node234<>(node.removeValue(C));
+        // Разбираемся с родителем
+        int itemIndex = parent.add(current.removeValue(B));
+        if (itemIndex == -1) throw new DuplicateFormatFlagsException("Duplicates not allowed");
+        int elems = parent.getSize();
 
-        parent.addChild(node).addChild(brother);
-//        parent.childs[0] = node;
-//        parent.childs[1] = brother;
-
-//        node.setParent(parent);
-//        brother.setParent(parent);
-
-        if (node == root) {
-            root = parent;
+        // Перемещение связей родителя На одного потомка вправо
+        for (int i = elems - 1; i > itemIndex; i--) {
+            parent.addChild(i + 1, parent.removeChild(i));
         }
 
-        return node;
-    }
-
-    private void splitRoot(Node234<T> node) {
-        if (node == root) {
-            //Создается новый корневой узел, он становится родителем разбиваемого узла.
-            Node234<T> newRoot = new Node234<>(node.removeValue(B)); //Элемент данных B перемещается в созданный корневой узел.
-            //Создается второй новый узел, который становится «братом» разбиваемого узла.
-            Node234<T> brother = new Node234<>(node.removeValue(C)); //Элемент данных C перемещается в созданного «брата».
-
-            root = newRoot;
-            node.setParent(newRoot);
-            brother.setParent(root);
-
-            root.addChild(node, 0);
-            root.addChild(brother, 1);
-        }
+        parent.addChild(itemIndex + 1, newRight);
     }
 
     void display() {
@@ -121,18 +103,37 @@ public class Tree234<T extends Comparable<T>> {
         if (node == null) return;
 
         if (depth == 0) {
-            if (node.hasChilds()) System.out.println("Root: " + node + " Childs: " + Arrays.toString(node.childs));
+            if (node.hasChildren()) System.out.println("Root: " + node + " Childs: " + Arrays.toString(node.children));
             else System.out.println("Root: " + root);
         }
         else {
-            if (node.hasChilds())
-                System.out.println("Depth#" + depth + ": " + node + " Childs: " + Arrays.toString(node.childs));
+            if (node.hasChildren())
+                System.out.println("Depth#" + depth + ": " + node + " Childs: " + Arrays.toString(node.children));
             else System.out.println("Depth#" + depth + ": " + node);
         }
 
         depth++;
-        for (Node234<T> child : node.childs) {
+        for (Node234<T> child : node.children) {
             doDisplay(child, depth);
+        }
+    }
+
+    public void displayTree() {
+        recDisplayTree(root, 0, 0);
+    }
+
+    private void recDisplayTree(Node234<T> thisNode, int level, int childNumber) {
+        System.out.print("level=" + level + " child=" + childNumber + " ");
+        System.out.println(thisNode);
+//         Вывод содержимого узла
+//         Рекурсивный вызов для каждого потомка текущего узла
+        int numItems = thisNode.getSize();
+        for (int j = 0; j < numItems + 1; j++) {
+            Node234<T> nextNode = thisNode.getChild(j);
+            if (nextNode != null)
+                recDisplayTree(nextNode, level + 1, j);
+            else
+                return;
         }
     }
 
@@ -140,136 +141,62 @@ public class Tree234<T extends Comparable<T>> {
         private static final int ORDER = 4;
         private Node234<T> parent;
         @SuppressWarnings("unchecked")
-        private Node234<T>[] childs = new Node234[ORDER];
+        private Node234<T>[] children = new Node234[ORDER];
         @SuppressWarnings("unchecked")
         private DataItem<T>[] items = new DataItem[ORDER - 1];
         private int size = -1;
+
+        Node234() {
+        }
 
         Node234(T value) {
             items[++size] = new DataItem<>(value);
         }
 
-        Node234<T> add(T value) {
-            DataItem<T>[] values = this.items;
+        int add(T elem) {
+            DataItem<T>[] elements = this.items;
 
+            if (!valid(elem, elements)) return -1;
+
+            ++size;
+
+            DataItem<T> newItem = new DataItem<>(elem);
+
+            for (int i = ORDER - 2; i >= 0; i--) {
+                if (elements[i] == null) continue;
+
+                if (elements[i].getItem().compareTo(elem) >= 1) {
+                    elements[i + 1] = elements[i];
+                }
+                else {
+                    elements[i + 1] = newItem;
+                    return i + 1;
+                }
+            }
+
+            elements[0] = newItem;
+            return 0;
+        }
+
+        private boolean valid(T value, DataItem<T>[] values) {
             if (this.isFull()) {
                 System.out.println("[ERROR] Node is full can not insert! " + this + " Value: " + value);
-                return this;
+                return false;
             }
 
             for (DataItem<T> item : values) {
                 if (item != null && item.getItem().compareTo(value) == 0) {
                     System.out.println("[WARN] Duplicate value not allowed: " + this + " Value: " + value);
-                    return this;
+                    return false;
                 }
             }
+            return true;
+        }
 
-            DataItem<T> current = values[A];
-            if (current == null) {
-                values[A] = new DataItem<>(value);
-                ++size;
-                return this;
-            }
-
-            if (values[A].getItem().compareTo(value) >= 1) { //current is bigger
-                values[A] = new DataItem<>(value);
-                DataItem<T> next = values[B];
-                values[B] = current;
-                values[C] = next;
-                ++size;
-                return this;
-            }
-
-            current = values[B];
-            if (current == null) {
-                values[B] = new DataItem<>(value);
-                ++size;
-                return this;
-            }
-
-            if (values[B].getItem().compareTo(value) >= 1) { //current is bigger
-                DataItem<T> next = values[B];
-                values[B] = new DataItem<>(value);
-                values[C] = next;
-                ++size;
-                return this;
-            }
-
-            values[C] = new DataItem<>(value);
-            ++size;
+        Node234<T> addChild(int index, Node234<T> child) {
+            children[index] = child;
+            if (child != null) child.setParent(this);
             return this;
-        }
-
-        T getFirstItem() {
-            return items[A].item;
-        }
-
-        T getSecondItem() {
-            return items[B].item;
-        }
-
-        T getThirdItem() {
-            return items[C].item;
-        }
-
-        Node234<T> getLoverThenFirstValueChild() {
-            return childs[0];
-        }
-
-        Node234<T> getBiggerThanFirstAndLoverThenSecondValueChild() {
-            return childs[1];
-        }
-
-        Node234<T> getBiggerThanSecondAndLoverThenThirdValueChild() {
-            return childs[2];
-        }
-
-        Node234<T> getBiggerThanThirdValueChild() {
-            return childs[3];
-        }
-
-        Node234<T> addChild(Node234<T> child, int index) {
-            childs[index] = child;
-            return this;
-        }
-
-        Node234<T> addChild(Node234<T> child) {
-            if (isAlreadyHaveThatChild(child)) {
-                return this;
-            }
-
-            if (child.getSize() == 1) {
-                for (int i = 0; i < items.length; i++) {
-                    if (items[i] == null) {
-                        this.childs[i] = child;
-                        child.setParent(this);
-                        break;
-                    }
-
-                    if (items[i].getItem().compareTo(child.getFirstItem()) >= 1) { //current is bigger
-                        this.childs[i] = child;
-                        child.setParent(this);
-                        break;
-                    }
-                }
-            }
-            else {
-                System.out.println("[BUGGG] addChild(Node234<T> child)");
-            }
-            return this;
-        }
-
-        private boolean isAlreadyHaveThatChild(Node234<T> child) {
-            boolean result = false;
-            for (int i = 0; i < childs.length; i++) {
-                if (childs[i] != null) {
-                    if (childs[i] == child) {
-                        result = true;
-                        break;
-                    }
-                }
-            }
-            return result;
         }
 
         Node234<T> getParent() {
@@ -281,53 +208,42 @@ public class Tree234<T extends Comparable<T>> {
             return this;
         }
 
-        Node234<T> setChilds(Node234<T>[] childs) {
-            this.childs = childs;
-            return this;
-        }
-
         T getValue(int index) {
             if (index > size) return null;
             return items[index].getItem();
         }
 
-        boolean hasChilds() {
-            for (int i = 0; i < childs.length; i++) {
-                if (childs[i] != null) {
-                    return true;
-                }
-            }
-            return false;
+        boolean hasChildren() {
+            return children[0] != null;
         }
 
         boolean isFull() {
-            for (int i = 0; i < items.length; i++) {
-                if (items[i] == null) {
-                    return false;
-                }
-            }
-            return true;
+            return items[ORDER - 2] != null;
         }
 
         T removeValue(int index) {
-//            if (index > size) return null;
             T result = items[index].getItem();
             items[index] = null;
-//            if(index == 0) {
-//                items[0] = items[1];
-//                items[1] = items[2];
-//                items[2] = null;
-//            }
-//            else if(index == 1) {
-//                items[1] = items[2];
-//                items[2] = null;
-//            }
             size--;
             return result;
         }
 
+        Node234<T> removeChild(int index) {
+            Node234<T> result = children[index];
+            children[index] = null;
+            return result;
+        }
+
+        Node234<T> getChild(int index) {
+            return children[index];
+        }
+
         public int getSize() {
             return size + 1;
+        }
+
+        int getItems() {
+            return size;
         }
 
         @Override
@@ -336,7 +252,7 @@ public class Tree234<T extends Comparable<T>> {
         }
 
         boolean isLeaf() {
-            return !hasChilds();
+            return !hasChildren();
         }
     }
 

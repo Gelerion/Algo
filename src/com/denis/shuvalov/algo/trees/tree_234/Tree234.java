@@ -15,18 +15,30 @@ class Tree234<T extends Comparable<T>> {
 
     private Node234<T> root = new Node234<>();
 
-    void find(T elem) {
+    DataItem<T> find(T elem) {
         Node234<T> current = root;
-        doFind(current, elem);
+        return doFind(current, elem);
     }
 
-    private void doFind(Node234<T> node, T elem) {
-        if (node == null) {
-            System.out.println("Element not found");
-            return;
+    private DataItem<T> doFind(Node234<T> node, T elem) {
+//        if (node == null) {
+//            System.out.println("Element not found");
+//            return null;
+//        }
+
+        for (int i = 0; i < node.getSize(); i++) {
+            if (node.getValue(i).compareTo(elem) == 0) {
+                System.out.println("[FOUND] " + node + " index: " + i);
+                return node.items[i];
+            }
         }
 
+        if (node.isLeaf()) {
+            System.out.println("[FIND] Not Found");
+            return null;
+        }
 
+        return doFind(advance(node, elem), elem);
     }
 
     void insert(T elem) {

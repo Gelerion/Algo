@@ -25,5 +25,8 @@ public class TestTree234 {
 
 //        tree.display();
         tree.displayTree();
+
+        System.out.println("=============== FIND ================");
+        tree.find(142);
     }
 }

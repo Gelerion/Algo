@@ -1,4 +1,4 @@
-package com.denis.shuvalov.algo.hash.doubleHash;
+package com.denis.shuvalov.algo.hash.chain;
 
 public class TestChainHash {
     public static void main(String[] args) {

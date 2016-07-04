@@ -1,4 +1,4 @@
-package com.denis.shuvalov.algo.hash.doubleHash;
+package com.denis.shuvalov.algo.hash.chain;
 
 import java.lang.reflect.Array;
 

@@ -44,20 +44,22 @@ public class Heap {
      */
     void insert(int key) {
         HeapNode newest = new HeapNode(key);
-        heapArray[size++] = newest;
+        heapArray[size] = newest;
+        trickleUp(size++);
+    }
 
-        //trickleUp()
-        int previous = parentIndex(size);
-        int currentIndex = size - 1;
-        while (previous >= 0 && heapArray[previous].getValue() < newest.getValue()) {
-            HeapNode parent = heapArray[previous];
-            heapArray[previous] = newest;
-            heapArray[currentIndex] = parent;
+    private void trickleUp(int index) {
+        int parent = parentIndex(index);
+        HeapNode bottom = heapArray[index];
 
-            if (previous == 0) break;
-            currentIndex = previous;
-            previous = parentIndex(previous);
+        while (parent >= 0 && bottom.getValue() > heapArray[parent].getValue()) {
+            heapArray[index] = heapArray[parent]; // Узел перемещается вниз
+            index = parent; // index перемещается вверх
+            if (parent == 0) break;
+            parent = parentIndex(parent); // parent <- его родитель
         }
+
+        heapArray[index] = bottom;
     }
 
     private int parentIndex(int index) {
@@ -78,11 +80,30 @@ public class Heap {
      */
     HeapNode remove() {
         HeapNode max = heapArray[0];
-        heapArray[0] = heapArray[size--];
+        //last value is now new top
+        heapArray[0] = heapArray[--size];
+        trickleDown(0);
+        return max;
+    }
 
-        HeapNode top = heapArray[0];
-        int currentIndex = 0;
+    public void changePriority(int index, int priority) {
+        if (index < 0 || index > size) return;
+
+        HeapNode node = heapArray[index];
+        int oldValue = node.getValue();
+        node.value = priority;
+
+        if (oldValue > priority)
+            trickleDown(index);  // Если узел понижается, выполняется смещение вниз
+        else
+            trickleUp(index); // Если узел повышается, выполняется смещение вверх
+    }
+
+    private void trickleDown(int index) {
+        HeapNode top = heapArray[index];
+        int currentIndex = index;
         int largerChild;
+        //going down
         while (currentIndex < size / 2) { // Пока у узла имеется хотя бы один потомок
             int left = leftIndex(currentIndex);
             int right = rightIndex(currentIndex);
@@ -100,7 +121,8 @@ public class Heap {
             currentIndex = largerChild;
         }
 
-        return max;
+        heapArray[currentIndex] = top;
+
     }
 
     private boolean isRightSuccessorIsBiggerThanLeft(HeapNode heapNode, HeapNode heapNode1) {return heapNode1.getValue() > heapNode.getValue();}

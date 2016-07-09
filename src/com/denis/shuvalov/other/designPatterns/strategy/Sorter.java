@@ -1,4 +1,4 @@
-package com.denis.shuvalov.other.strategy;
+package com.denis.shuvalov.other.designPatterns.strategy;
 
 public interface Sorter {
     int[] sort(int[] array);

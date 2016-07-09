@@ -1,4 +1,4 @@
-package com.denis.shuvalov.other.strategy;
+package com.denis.shuvalov.other.designPatterns.strategy;
 
 public class QuickSorter implements Sorter {
     @Override

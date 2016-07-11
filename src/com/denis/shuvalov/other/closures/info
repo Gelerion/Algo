@@ -1,0 +1,8 @@
+One huge difference between using a method and using a function is parameter evaluation time.
+In Java, one can write a method taking some arguments and returning a value. Is this a function? Not at all.
+A method can't be manipulated in any other way than calling it, and this implies that its arguments will
+be evaluated before the method is executed. This is a consequence of arguments being passed by value in Java.
+
+Functions are different. One may manipulate functions without evaluating them. And one has complete control
+over when the arguments are evaluated. And if a function has several arguments, they may be evaluated at
+different time. This may be done through the use of currying. But first, we will see how this may be done with closures.

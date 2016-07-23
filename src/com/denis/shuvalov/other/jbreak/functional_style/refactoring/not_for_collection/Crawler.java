@@ -7,7 +7,17 @@ import java.net.URLConnection;
 
 public class Crawler {
 
-    //with javaslang Try.of...
+    //with javaslang
+
+/*    Try<String> getContent(String location) {
+        return Try
+                .of(() -> new URL(location))
+                .filter(url -> "http".equals(url.getProtocol()))
+                .flatMap(url -> Try.of(url::openConnection))
+                .flatMap(con -> Try.of(con::getInputStream))
+                .map(this::readAndClose);
+    }*/
+
     String readContent(String location) {
         try {
             URL url = new URL(location);

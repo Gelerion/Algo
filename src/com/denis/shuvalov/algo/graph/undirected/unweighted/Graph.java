@@ -3,6 +3,7 @@ package com.denis.shuvalov.algo.graph.undirected.unweighted;
 import javafx.util.Pair;
 
 import java.lang.reflect.Array;
+import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -31,6 +32,52 @@ public class Graph {
         System.out.println(vertexList[v].label);
     }
 
+    //Minimum Spanning Tree
+    //минимальное состовное дерево
+    void mst() {
+        Stack stack = new Stack();
+        vertexList[0].wasVisited = true;
+        stack.push(0);
+
+        int previous = 0;
+        while (!stack.isEmpty()) {
+            int current = getAdjUnvisitedVertex(stack.peek());
+            if (current == -1) stack.pop();
+            else {
+                vertexList[current].wasVisited = true;
+                System.out.print(vertexList[previous].label);
+                System.out.print(vertexList[current].label + " ");
+
+                previous = current;
+                stack.push(current);
+            }
+        }
+
+        for (int j = 0; j < nVerts; j++)
+            // Сброс флагов
+            vertexList[j].wasVisited = false;
+
+    }
+
+    void mstOnBfs() {
+        Queue<Integer> list = new ArrayDeque<>();
+        list.add(0);
+        vertexList[0].wasVisited = true;
+
+        while (!list.isEmpty()) {
+            Integer current = list.remove();
+
+            int next;
+            while ((next = getAdjUnvisitedVertex(current)) != -1) {
+                list.add(next);
+                vertexList[next].wasVisited = true;
+
+                System.out.print(vertexList[current]);
+                System.out.print(vertexList[next] + " ");
+            }
+        }
+    }
+
     void bookDfs() {
         Stack stack = new Stack();
         vertexList[0].wasVisited = true;
@@ -43,7 +90,7 @@ public class Graph {
             if (v == -1) stack.pop(); // Если такой вершины нет, элемент извлекается из стека
             else {
                 vertexList[v].wasVisited = true; // Пометка
-                System.out.print(vertexList[v].label); // Вывод
+                System.out.print(vertexList[v].label + " "); // Вывод
                 stack.push(v); // Занесение в стек
             }
         }
@@ -54,7 +101,7 @@ public class Graph {
             vertexList[j].wasVisited = false;
     }
 
-    //    Depth-First Search
+    //Depth-First Search
     void dfs() {
         PairStack pairStack = new PairStack();
         System.out.print("Visits: ");
@@ -150,7 +197,7 @@ public class Graph {
         }
 
         void push(int vertexIndex) {
-            if (size > array.length) array = Arrays.copyOf(array, (int) (array.length * 1.7));
+            if (size >= array.length) array = Arrays.copyOf(array, (int) (array.length * 1.7));
             array[size++] = vertexIndex;
         }
 

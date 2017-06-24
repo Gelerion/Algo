@@ -15,3 +15,18 @@ Google:
  - count the number of disjoint objects in a bitmap
  - implement a program which plays tic-tac-toe
  - sort very large file
+
+
+ommon computational algorithms such as
+Dijkstra’s,
+Floyd-Warshall,
+Traveling Salesman,
+A*,
+bloom filter,
+breadth-first iterative search,
+binary search,
+k-way merge,
+bubble/selection/insertion sort,
+in-place quick sort,
+bucket/radix sort,
+closest pair

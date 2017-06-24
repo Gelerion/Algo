@@ -94,7 +94,7 @@ public class HuffmanDecoder {
             pq.insert(forest[i]);
         }
 
-//        System.out.println("pq = " + pq);
+        System.out.println("pq = " + pq);
 
         while (pq.size >= 2) {
             HuffmanTree first = pq.remove();

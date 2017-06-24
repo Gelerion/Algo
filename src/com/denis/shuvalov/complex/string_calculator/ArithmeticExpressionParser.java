@@ -7,18 +7,20 @@ public class ArithmeticExpressionParser {
     private Stack<Integer> values = new Stack<>();
 
     public static void main(String[] args) {
-//        System.out.println("A + B - C => " + new ArithmeticExpressionParser().toInfixExpression("A + B - C"));
-//        System.out.println("A + B * C => " + new ArithmeticExpressionParser().toInfixExpression("A + B * C"));
-//        System.out.println("A × (B + C) => " + new ArithmeticExpressionParser().toInfixExpression("A * (B + C)"));
-//        System.out.println("A + B × (C – D) => " + new ArithmeticExpressionParser().toInfixExpression("A + B * (C - D)"));
-//        System.out.println("A * (B + C) - D / (E + F) => " + new ArithmeticExpressionParser().toInfixExpression("A * (B + C) - D / (E + F)"));
-//        System.out.println("A + B * (C / D) + E => " + new ArithmeticExpressionParser().toInfixExpression("A + B * (C / D) + E"));
+        System.out.println("A + B - C => " + new ArithmeticExpressionParser().toInfixExpression("A + B - C"));
+        System.out.println("A + B * C => " + new ArithmeticExpressionParser().toInfixExpression("A + B * C"));
+        System.out.println("A × (B + C) => " + new ArithmeticExpressionParser().toInfixExpression("A * (B + C)"));
+        System.out.println("A + B × (C – D) => " + new ArithmeticExpressionParser().toInfixExpression("A + B * (C - D)"));
+        System.out.println("A * (B + C) - D / (E + F) => " + new ArithmeticExpressionParser().toInfixExpression("A * (B + C) - D / (E + F)"));
+        System.out.println("A + B * (C / D) + E => " + new ArithmeticExpressionParser().toInfixExpression("A + B * (C / D) + E"));
+        System.out.println("(A + B) ∗ (C − D)) => " + new ArithmeticExpressionParser().toInfixExpression("(A + B) ∗ (C − D)"));
 //        System.out.println("3 + 5 * (8 / 2) + 1 => " + new ArithmeticExpressionParser().toInfixExpression("3 + 5 * (8 / 2) + 1"));
         ArithmeticExpressionParser parser = new ArithmeticExpressionParser();
-        String infixExpression = parser.toInfixExpression("3 + 5 * (8 / 2) + 1");
+        String infixExpression = parser.toInfixExpression("3 + 5 * (8 / 2) + 1"); //3582/*+1+
         System.out.println("infixExpression = " + infixExpression);
         System.out.println("3 + 5 * (8 / 2) + 1 => " + parser.evaluateInfix(infixExpression));
         System.out.println("13 + 25 * (18 / 2) + 15 => " + parser.evaluateInfix(parser.toInfixExpression("13 + 25 * (18 / 2) + 15")));
+        System.out.println("((5 + 2) ∗ (2 − 1)) => " + parser.evaluateInfix(parser.toInfixExpression("(5 + 2) ∗ (2 − 1)")));
     }
 
     private String toInfixExpression(String postFixExpression) {

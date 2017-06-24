@@ -16,7 +16,7 @@ public class Fibonacci {
             return answer;
         } else {
             long[] temp = fibonacci(n - 1);                   // returns {Fn−1, Fn−2}
-            long[] answer = {temp[0] + temp[1], temp[0]};     // we want {Fn, Fn−1}
+            long[] answer = {temp[0] + temp[1], temp[0]};       // we want {Fn, Fn−1}
             return answer;
         }
     }

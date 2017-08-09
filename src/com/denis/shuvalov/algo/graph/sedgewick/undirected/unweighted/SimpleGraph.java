@@ -1,25 +1,24 @@
 package com.denis.shuvalov.algo.graph.sedgewick.undirected.unweighted;
 
-import com.denis.shuvalov.algo.graph.sedgewick.Graph;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.util.LinkedList;
 
-import java.io.*;
-import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.List;
+import com.denis.shuvalov.algo.graph.sedgewick.Graph;
 
 public class SimpleGraph implements Graph {
     private final int vertices;
     private int edges;
-    private List<Integer>[] adj;
+	private LinkedList<Integer>[] adj;
 
     @SuppressWarnings("unchecked")
     public SimpleGraph(int vertices) {
         this.vertices = vertices;
         this.edges = 0;
-        this.adj = new List[vertices];
+		this.adj = new LinkedList[vertices];
 
         for (int v = 0; v < vertices; v++) {
-            this.adj[v] = new ArrayList<>();
+			this.adj[v] = new LinkedList<>();
         }
     }
 
@@ -28,18 +27,23 @@ public class SimpleGraph implements Graph {
         try {
             this.vertices = Integer.parseInt(in.readLine());
             this.edges = Integer.parseInt(in.readLine());
-            this.adj = new List[vertices];
+			this.adj = new LinkedList[vertices];
 
             String line;
             while ((line = in.readLine()) != null) {
                 String[] edges = line.split("\\s");
-                int from = Integer.parseInt(edges[0]);
-                int to = Integer.parseInt(edges[1]);
-                if (this.adj[from] == null) {
-                    this.adj[from] = new ArrayList<>();
+				int v = Integer.parseInt(edges[0]);
+				int w = Integer.parseInt(edges[1]);
+				if (this.adj[v] == null) {
+					this.adj[v] = new LinkedList<>();
                 }
 
-                this.adj[from].add(to);
+				if (this.adj[w] == null) {
+					this.adj[w] = new LinkedList<>();
+				}
+
+				this.adj[v].addFirst(w);
+				this.adj[w].addFirst(v);
             }
 
         } catch (IOException e) {
@@ -68,4 +72,19 @@ public class SimpleGraph implements Graph {
     public Iterable<Integer> adjacentTo(int vertex) {
         return adj[vertex];
     }
+
+	@Override
+	public String toString() {
+		StringBuilder result = new StringBuilder(vertices + " vertices " + edges + " edges\n");
+		for (int v = 0; v < vertices; v++) {
+			result.append(v).append(": ");
+			for (Integer w : adjacentTo(v)) {
+				result.append(w).append(" ");
+			}
+			result.append("\n");
+		}
+
+		return result.toString();
+	}
 }
+

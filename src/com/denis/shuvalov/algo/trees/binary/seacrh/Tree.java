@@ -31,6 +31,8 @@ public class Tree<V extends Comparable<V>> {
         return helper.val;
     }
 
+	// LCA for BTree traverse fromm root to n1, then to n2, compare both paths till
+	// values are same
     TreeNode<V> lowestCommonAncestor(V n1, V n2) {
         return lowestCommonAncestor(root, n1, n2);
     }
@@ -48,6 +50,37 @@ public class Tree<V extends Comparable<V>> {
 
         return node;
     }
+
+	// traverse the tree T in preorder fashion. For every visited node in the
+	// traversal,
+	// see if the subtree rooted with this node is identical to S.
+	boolean isSubtree(Tree<V> other) {
+		return isSubtree(root, other.root);
+
+	}
+
+	private boolean isSubtree(TreeNode<V> tree, TreeNode<V> sub) {
+		if (tree == null)
+			return false;
+		if (sub == null)
+			return false;
+
+		if (areIdentical(tree, sub)) {
+			return true;
+		}
+
+		return isSubtree(tree.leftChild(), sub) || isSubtree(tree.rightChild(), sub);
+	}
+
+	private boolean areIdentical(TreeNode<V> node1, TreeNode<V> node2) {
+		if (node1 == null && node2 == null)
+			return true;
+		if (node1 == null || node2 == null)
+			return false;
+
+		return node1.value().compareTo(node2.value()) == 0 && areIdentical(node1.leftChild(), node2.leftChild())
+				&& areIdentical(node1.rightChild(), node2.rightChild());
+	}
 
     int longestPathBetweenTwoLeafs() {
         return 0;
@@ -254,7 +287,8 @@ public class Tree<V extends Comparable<V>> {
             return this;
         }
 
-        postOrder(root);
+		// postOrder(root);
+		inOrder(root);
         return this;
     }
 

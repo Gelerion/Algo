@@ -1,21 +1,24 @@
 package com.denis.shuvalov.algo.graph.sedgewick;
 
-import com.denis.shuvalov.algo.graph.sedgewick.undirected.unweighted.SimpleGraph;
-
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import com.denis.shuvalov.algo.graph.sedgewick.undirected.unweighted.SimpleGraph;
+
 public class GraphTest {
-    public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, URISyntaxException {
 //        Graph graph = new SimpleGraph(13);
-        String tiny = "D:\\Projects\\Learning\\Algo\\src\\com\\denis\\shuvalov\\algo\\graph\\sedgewick\\undirected\\unweighted\\tinyG.txt";
-        String medium = "D:\\Projects\\Learning\\Algo\\src\\com\\denis\\shuvalov\\algo\\graph\\sedgewick\\undirected\\unweighted\\mediumG.txt";
+		URI tiny = GraphTest.class.getResource("undirected/unweighted/tinyG.txt").toURI();
+		URI medium = GraphTest.class.getResource("undirected/unweighted/mediumG.txt").toURI();
 
-
-        BufferedReader in = Files.newBufferedReader(Paths.get(medium));
+		BufferedReader in = Files.newBufferedReader(Paths.get(tiny));
         Graph graph = new SimpleGraph(in);
+		System.out.println(graph);
+
         in.close();
 
     }

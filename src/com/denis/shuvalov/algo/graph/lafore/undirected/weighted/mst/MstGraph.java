@@ -1,4 +1,4 @@
-package com.denis.shuvalov.algo.graph.undirected.weighted.mst;
+package com.denis.shuvalov.algo.graph.lafore.undirected.weighted.mst;
 
 import java.util.ArrayList;
 import java.util.List;

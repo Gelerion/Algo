@@ -1,4 +1,4 @@
-package com.denis.shuvalov.algo.graph.undirected.unweighted.listAdj;
+package com.denis.shuvalov.algo.graph.lafore.undirected.unweighted.listAdj;
 
 public class TestListAdjGraph {
     public static void main(String[] args) {

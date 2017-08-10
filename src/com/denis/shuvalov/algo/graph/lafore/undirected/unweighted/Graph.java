@@ -1,4 +1,4 @@
-package com.denis.shuvalov.algo.graph.undirected.unweighted;
+package com.denis.shuvalov.algo.graph.lafore.undirected.unweighted;
 
 import javafx.util.Pair;
 

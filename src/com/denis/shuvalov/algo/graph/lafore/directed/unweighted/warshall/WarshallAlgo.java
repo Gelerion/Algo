@@ -1,4 +1,4 @@
-package com.denis.shuvalov.algo.graph.directed.unweighted.warshall;
+package com.denis.shuvalov.algo.graph.lafore.directed.unweighted.warshall;
 
 /**
  * В некоторых приложениях необходимо быстро определить, возможен ли переход от

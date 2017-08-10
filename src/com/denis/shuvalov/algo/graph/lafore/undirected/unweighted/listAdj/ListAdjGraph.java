@@ -1,4 +1,4 @@
-package com.denis.shuvalov.algo.graph.undirected.unweighted.listAdj;
+package com.denis.shuvalov.algo.graph.lafore.undirected.unweighted.listAdj;
 
 import java.util.ArrayList;
 import java.util.Arrays;

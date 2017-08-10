@@ -1,4 +1,4 @@
-package com.denis.shuvalov.algo.graph.directed.unweighted;
+package com.denis.shuvalov.algo.graph.lafore.directed.unweighted;
 
 import java.util.Arrays;
 import java.util.Deque;

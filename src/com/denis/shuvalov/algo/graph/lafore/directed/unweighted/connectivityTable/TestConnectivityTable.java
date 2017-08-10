@@ -1,4 +1,4 @@
-package com.denis.shuvalov.algo.graph.directed.unweighted.connectivityTable;
+package com.denis.shuvalov.algo.graph.lafore.directed.unweighted.connectivityTable;
 
 public class TestConnectivityTable {
 	public static void main(String[] args) {

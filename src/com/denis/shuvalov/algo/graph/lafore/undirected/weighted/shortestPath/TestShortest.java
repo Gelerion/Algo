@@ -1,4 +1,4 @@
-package com.denis.shuvalov.algo.graph.undirected.weighted.shortestPath;
+package com.denis.shuvalov.algo.graph.lafore.undirected.weighted.shortestPath;
 
 public class TestShortest {
 	public static void main(String[] args) {

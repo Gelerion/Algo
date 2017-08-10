@@ -1,4 +1,4 @@
-package com.denis.shuvalov.algo.graph.undirected.unweighted;
+package com.denis.shuvalov.algo.graph.lafore.undirected.unweighted;
 
 public class TestGrpah {
     public static void main(String[] args) {

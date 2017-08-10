@@ -1,4 +1,4 @@
-package com.denis.shuvalov.algo.graph.directed.unweighted.connectivityTable;
+package com.denis.shuvalov.algo.graph.lafore.directed.unweighted.connectivityTable;
 
 import java.util.Stack;
 

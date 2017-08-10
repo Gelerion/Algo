@@ -1,4 +1,4 @@
-package com.denis.shuvalov.algo.graph.undirected.weighted.shortestPath;
+package com.denis.shuvalov.algo.graph.lafore.undirected.weighted.shortestPath;
 
 import java.util.ArrayList;
 import java.util.Arrays;

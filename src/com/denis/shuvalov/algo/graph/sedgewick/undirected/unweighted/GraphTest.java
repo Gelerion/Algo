@@ -6,10 +6,14 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.denis.shuvalov.algo.graph.sedgewick.Graph;
+import com.denis.shuvalov.algo.graph.sedgewick.helper.ConnectedComponents;
 import com.denis.shuvalov.algo.graph.sedgewick.helper.GraphPaths;
-import com.denis.shuvalov.algo.graph.sedgewick.helper.paths.DepthFirstPaths;
+import com.denis.shuvalov.algo.graph.sedgewick.helper.connected.components.DfsConnectedComponents;
+import com.denis.shuvalov.algo.graph.sedgewick.helper.paths.BreadthFirstPaths;
 import com.denis.shuvalov.algo.graph.sedgewick.helper.search.DepthFirstSearch;
 import com.denis.shuvalov.algo.graph.sedgewick.helper.Search;
 
@@ -33,6 +37,7 @@ public class GraphTest {
 		System.out.println("Source: " + source);
 
 		//----------------- Search -----------------
+        System.out.println("----------------- Search -----------------");
 		Search search = new DepthFirstSearch(graph, source);
 		for (int v = 0; v < graph.vertices(); v++)
 			if (search.marked(v)) System.out.print(v + " ");
@@ -45,7 +50,8 @@ public class GraphTest {
 		System.out.println();
 
 		//----------------- Connectivity -----------------
-		GraphPaths paths = new DepthFirstPaths(graph, source);
+        System.out.println("----------------- Connectivity -----------------");
+        GraphPaths paths = new BreadthFirstPaths(graph, source);
 		for (int v = 0; v < graph.vertices(); v++) {
 			System.out.print(source + " to " + v + ": ");
 			if(paths.hasPathTo(v)) {
@@ -57,5 +63,28 @@ public class GraphTest {
 			}
 		}
 
-	}
+        System.out.println();
+
+        //----------------- Connected Components -----------------
+        System.out.println("----------------- Connected Components -----------------");
+        ConnectedComponents cc = new DfsConnectedComponents(graph);
+        int m = cc.count();
+        System.out.println(m + " components");
+        ArrayList<List<Integer>> components = new ArrayList<>(m);
+
+        for (int i = 0; i < m; i++) {
+            components.add(i, new ArrayList<>());
+        }
+
+        for (int v = 0; v < graph.vertices(); v++) {
+            components.get(cc.id(v)).add(v);
+        }
+
+        for (int i = 0; i < m; i++) {
+            for (Integer v : components.get(i)) {
+                System.out.print(v + " ");
+            }
+            System.out.println();
+        }
+    }
 }

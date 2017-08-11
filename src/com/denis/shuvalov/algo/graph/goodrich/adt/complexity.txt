@@ -1,0 +1,42 @@
+• In an edge list, we maintain an unordered list of all edges. This minimally
+  suffices, but there is no efficient way to locate a particular edge (u,v), or the
+  set of all edges incident to a vertex v.
+• In an adjacency list, we additionally maintain, for each vertex, a separate
+  list containing those edges that are incident to the vertex. This organization
+  allows us to more efficiently find all edges incident to a given vertex.
+• An adjacency map is similar to an adjacency list, but the secondary container
+  of all edges incident to a vertex is organized as a map, rather than as a list,
+  with the adjacent vertex serving as a key. This allows more efficient access
+  to a specific edge (u,v), for example, in O(1) expected time with hashing.
+• An adjacency matrix provides worst-case O(1) access to a specific edge
+  (u,v) by maintaining an n×n matrix, for a graph with n vertices. Each
+  slot is dedicated to storing a reference to the edge (u,v) for a particular pair
+  of vertices u and v; if no such edge exists, the slot will store null.
+
+  |------------------------------------------------------------------------|
+  | Method            | Edge List | Adj. List     | Adj. Map | Adj. Matrix |
+  |-------------------|-----------|---------------|----------|-------------|
+  | numVertices()     | O(1)      | O(1)          | O(1)     | O(1)        |
+  |-------------------|-----------|---------------|----------|-------------|
+  | numEdges()        | O(1)      | O(1)          | O(1)     | O(1)        |
+  |-------------------|-----------|---------------|----------|-------------|
+  | vertices()        | O(n)      | O(n)          | O(n)     | O(n)        |
+  |-------------------|-----------|---------------|----------|-------------|
+  | edges()           | O(m)      | O(m)          | O(m)     | O(m)        |
+  |-------------------|-----------|---------------|----------|-------------|
+  | getEdge(u, v)     | O(m)      | O(min(du,dv)) | O(1) exp.| O(1)        |
+  |-------------------|-----------|---------------|----------|-------------|
+  | outDegree(v)      | O(m)      | O(1)          | O(1)     | O(n)        |
+  | inDegree(v)       |           |               |          |             |
+  |-------------------|-----------|---------------|----------|-------------|
+  | outgoingEdges(v)  |  O(m)     | O(dv)         | O(dv)    | O(n)        |
+  | incomingEdges(v)  |           |               |          |             |
+  |-------------------|-----------|---------------|----------|-------------|
+  | insertVertex(x)   | O(1)      | O(1)          | O(1)     | O(n2)       |
+  |-------------------|-----------|---------------|----------|-------------|
+  | removeVertex(v)   | O(m)      | O(dv)         | O(dv)    | O(n2)       |
+  |-------------------|-----------|---------------|----------|-------------|
+  | insertEdge(u,v,x) | O(1)      | O(1)          | O(1) exp.| O(1)        |
+  |-------------------|-----------|---------------|----------|-------------|
+  | removeEdge(e)     | O(1)      | O(1)          | O(1) exp.| O(1)        |
+  |------------------------------------------------------------------------|

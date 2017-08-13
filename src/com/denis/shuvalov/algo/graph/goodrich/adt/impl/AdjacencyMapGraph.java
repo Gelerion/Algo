@@ -92,6 +92,15 @@ public class AdjacencyMapGraph<V, E> implements Graph<V, E> {
     }
 
     @Override
+    public Vertex<V> findVertex(V element) {
+        for (Vertex<V> vertex : this.vertices) {
+            if(vertex.getElement().equals(element)) return vertex;
+        }
+
+        return null;
+    }
+
+    @Override
     public Edge<E> insertEdge(Vertex<V> u, Vertex<V> v, E element) throws IllegalArgumentException {
         if(getEdge(u, v) != null) throw new IllegalArgumentException("Edge from u to v exists");
 
@@ -149,13 +158,40 @@ public class AdjacencyMapGraph<V, E> implements Graph<V, E> {
         return (AdjMapEdge) e;
     }
 
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+     sb.append("Edges:");
+     for (Edge<E> e : edges) {
+       Vertex<V>[] verts = endVertices(e);
+       sb.append(String.format(" (%s->%s, %s)", verts[0].getElement(), verts[1].getElement(), e.getElement()));
+     }
+     sb.append("\n");
+        for (Vertex<V> v : vertices) {
+            sb.append("Vertex ").append(v.getElement()).append("\n");
+            if (isDirected)
+                sb.append(" [outgoing]");
+            sb.append(" ").append(outDegree(v)).append(" adjacencies:");
+            for (Edge<E> e: outgoingEdges(v))
+                sb.append(String.format(" (%s, %s)", opposite(v,e).getElement(), e.getElement()));
+            sb.append("\n");
+            if (isDirected) {
+                sb.append(" [incoming]");
+                sb.append(" ").append(inDegree(v)).append(" adjacencies:");
+                for (Edge<E> e: incomingEdges(v))
+                    sb.append(String.format(" (%s, %s)", opposite(v,e).getElement(), e.getElement()));
+                sb.append("\n");
+            }
+        }
+        return sb.toString();
+    }
+
     /** A vertex of an adjacency map graph representation. */
     private class AdjMapVertex implements Vertex<V> {
         private V element;
         //    (U)
         //  e/   \g
         // (V)-f-(W)
-        // this is vertex U holds map((V) -> e, (W) -> g)
+        // vertex U holds map((V) -> e, (W) -> g)
         private Map<Vertex<V>, Edge<E>> outgoing, incoming;
 
         AdjMapVertex(V element, boolean isDirected) {
@@ -182,6 +218,11 @@ public class AdjacencyMapGraph<V, E> implements Graph<V, E> {
         Map<Vertex<V>, Edge<E>> getIncoming() {
             return incoming;
         }
+
+        @Override
+        public String toString() {
+            return element.toString();
+        }
     }
 
     /** An edge between two vertices. */
@@ -204,6 +245,11 @@ public class AdjacencyMapGraph<V, E> implements Graph<V, E> {
 
         Vertex<V>[] getEndpoints() {
             return endpoints;
+        }
+
+        @Override
+        public String toString() {
+            return "(" + this.endpoints[0] + "-" + element.toString() + this.endpoints[1] + ")";
         }
     }
 }

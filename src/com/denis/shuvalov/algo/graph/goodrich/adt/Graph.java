@@ -63,6 +63,8 @@ public interface Graph<V,E> {
     /** Inserts and returns a new vertex with the given element. */
     Vertex<V> insertVertex(V element);
 
+    Vertex<V> findVertex(V element);
+
     /**
      * Inserts and returns a new edge between vertices u and v, storing given element.
      *
